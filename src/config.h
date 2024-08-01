@@ -1,0 +1,6 @@
+#ifndef BLUE_MAX_CONFIG_H
+#define BLUE_MAX_CONFIG_H
+
+#define DEBUG_MODE 1
+
+#endif //BLUE_MAX_CONFIG_H
