@@ -4,11 +4,11 @@ project(blue_max)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(${PROJECT_NAME} src/main.c
-        src/vector.c
-        src/vector.h
+        src/Vector.c
+        src/Vector.h
         src/config.h
-        src/sphere.c
-        src/sphere.h)
+        src/Sphere.c
+        src/Sphere.h)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 set(SDL2_PATH "SDL2/x86_64-w64-mingw32")
