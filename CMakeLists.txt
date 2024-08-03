@@ -8,7 +8,10 @@ add_executable(${PROJECT_NAME} src/main.c
         src/Vector.h
         src/config.h
         src/Sphere.c
-        src/Sphere.h)
+        src/Sphere.h
+        src/Box.c
+        src/Box.h
+)
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 set(SDL2_PATH "SDL2/x86_64-w64-mingw32")
