@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME} src/main.c
         src/Sphere.h
         src/Box.c
         src/Box.h
+        src/defs.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
