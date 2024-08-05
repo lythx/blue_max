@@ -1,41 +1,72 @@
 #include "Vector.h"
 #include "SDL.h"
 #include "math.h"
+#include "defs.h"
+
+#define SIN ROTATION_SIN
+#define COS ROTATION_COS
 
 Vector vector_create(double x, double y, double z) {
   return (Vector) {x, y, z};
 }
 
-Vector vector_sum(const Vector* v1, const Vector* v2) {
-  return vector_create(v1->x + v2->x, v1->y + v2->y, v1->z + v2->z);
+Vector vector_copy(const Vector* v) {
+  return (Vector) {v->x, v->y, v->z};
 }
 
-Vector vector_multiply(const Vector* v, double scalar) {
-  return vector_create(scalar * v->x, scalar * v->y, scalar * v->z);
+void vector_negate(Vector* v) {
+  v->x = -v->x;
+  v->y = -v->y;
+  v->z = -v->z;
+}
+
+void vector_sum(Vector* v1, const Vector* v2) {
+  v1->x += v2->x;
+  v1->y += v2->y;
+  v1->z += v2->z;
+}
+
+void vector_subtract(Vector* v1, const Vector* v2) {
+  v1->x -= v2->x;
+  v1->y -= v2->y;
+  v1->z -= v2->z;
+}
+
+void vector_multiply(Vector* v, double scalar) {
+  v->x *= scalar;
+  v->y *= scalar;
+  v->z *= scalar;
 }
 
 double vector_norm(const Vector* v) {
   return sqrt(v->x*v->x + v->y*v->y + v->z*v->z);
 }
 
-Vector vector_normalize(const Vector* v) {
+void vector_normalize(Vector* v) {
   double norm = vector_norm(v);
   if (norm == 0) {
     SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
                     "[0, 0, 0] vector passed to vector_normalize.");
     exit(1);
   }
-  return vector_multiply(v, 1.0 / norm);
+  vector_multiply(v, 1.0 / norm);
 }
 
 double vector_dot_product(const Vector* v1, const Vector* v2) {
   return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
 }
 
-Vector vector_cross_product(const Vector* v1, const Vector* v2) {
-  return vector_create(v1->y * v2->z - v1->z * v2->y,
-                       v1->z * v2->x - v1->x * v2->z,
-                       v1->x * v2->y - v1->y * v2->x);
+void vector_cross_product(Vector* v1, const Vector* v2) {
+  v1->x = v1->y * v2->z - v1->z * v2->y;
+  v1->y = v1->z * v2->x - v1->x * v2->z;
+  v1->z = v1->x * v2->y - v1->y * v2->x;
+}
+
+void vector_rotate(Vector* to_rotate, const Vector* origin) {
+  double dx = to_rotate->x - origin->x;
+  double dy = to_rotate->y - origin->y;
+  to_rotate->x = dx * COS - dy * SIN + origin->x;
+  to_rotate->y = dx * SIN + dy * COS + origin->y;
 }
 
 void vector_print(const Vector* v) {

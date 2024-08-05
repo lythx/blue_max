@@ -8,4 +8,7 @@ typedef struct {
     SDL_Window *window;
 } App;
 
+#define ROTATION_SIN 0.5
+#define ROTATION_COS 0.8660254
+
 #endif //BLUE_MAX_DEFS_H
