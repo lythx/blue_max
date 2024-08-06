@@ -14,6 +14,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/defs.h
         src/init_SDL.c
         src/init_SDL.h
+        src/draw.c
+        src/draw.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
