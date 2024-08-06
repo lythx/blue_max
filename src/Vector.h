@@ -27,7 +27,9 @@ double vector_dot_product(const Vector* v1, const Vector* v2);
 
 void vector_cross_product(Vector* v1, const Vector* v2);
 
-void vector_rotate(Vector* to_rotate, const Vector* origin);
+void vector_rotate(Vector* v);
+
+void vector_rotate_about_origin(Vector* to_rotate, const Vector* origin);
 
 void vector_print(const Vector* v);
 

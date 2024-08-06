@@ -62,7 +62,13 @@ void vector_cross_product(Vector* v1, const Vector* v2) {
   v1->z = v1->x * v2->y - v1->y * v2->x;
 }
 
-void vector_rotate(Vector* to_rotate, const Vector* origin) {
+void vector_rotate(Vector* v) {
+  double vx = v->x;
+  v->x = v->x * COS - v->y * SIN;
+  v->y = vx * SIN + v->y * COS;
+}
+
+void vector_rotate_about_origin(Vector* to_rotate, const Vector* origin) {
   double dx = to_rotate->x - origin->x;
   double dy = to_rotate->y - origin->y;
   to_rotate->x = dx * COS - dy * SIN + origin->x;
