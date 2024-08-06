@@ -4,18 +4,16 @@
 #include "Vector.h"
 
 typedef struct {
-    double min_x;
-    double min_y;
-    double min_z;
-    double max_x;
-    double max_y;
-    double max_z;
+    double x;
+    double y;
+    double z;
+    double length;
+    double width;
+    double height;
 } Box;
 
-Box box_create(double min_x, double min_y, double min_z,
-                     double max_x, double max_y, double max_z);
-
-Box box_create_from_vectors(const Vector* min, const Vector* max);
+Box box_create(double x, double y, double z,
+                     double length, double width, double height);
 
 int box_intersects(const Box* b1, const Box* b2);
 
