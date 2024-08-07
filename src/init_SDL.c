@@ -1,5 +1,6 @@
 #include "init_SDL.h"
 #include "config.h"
+#include "SDL_image.h"
 
 void init_SDL(App* app) {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -22,9 +23,15 @@ void init_SDL(App* app) {
     SDL_Quit();
     exit(1);
   }
+
+  if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0) {
+    SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Error while initializing IMG: %s", SDL_GetError());
+    exit(1);
+  }
 }
 
 void quit_SDL(App* app) {
+  IMG_Quit();
   SDL_DestroyRenderer(app->renderer);
   SDL_DestroyWindow(app->window);
   SDL_Quit();
