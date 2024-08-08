@@ -1,5 +1,6 @@
 #include "Box.h"
 #include "SDL.h"
+#include "../defs.h"
 
 Box box_create(double x, double y, double z,
                double length, double width, double height) {
@@ -10,6 +11,14 @@ Box box_create(double x, double y, double z,
     exit(1);
   }
   return (Box) {x, y, z, length, width, height};
+}
+
+Box box_create_around_center(const Vector* center,
+                             double length, double width, double height) {
+  double x = center->x - length * ROTATION_COS / 2;
+  double y = center->y - width / 2 - length * ROTATION_SIN / 2;
+  double z = center->z - height / 2;
+  return box_create(x, y, z, length, width, height);
 }
 
 int box_intersects(const Box* b1, const Box* b2) {

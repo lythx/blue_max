@@ -15,6 +15,9 @@ typedef struct {
 Box box_create(double x, double y, double z,
                      double length, double width, double height);
 
+Box box_create_around_center(const Vector* center,
+                             double length, double width, double height);
+
 int box_intersects(const Box* b1, const Box* b2);
 
 int box_point_intersects(const Box* b, const Vector* p);
