@@ -10,4 +10,6 @@ void draw_line(const App* app, const Vector* a, const Vector* b);
 
 void draw_box(const App* app, const Box* b);
 
+void draw_hitboxes(const App* app, const Box* hitboxes, size_t size);
+
 #endif //BLUE_MAX_DRAW_H
