@@ -24,10 +24,7 @@ void init_SDL(App* app) {
     exit(1);
   }
 
-  if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) != 0) {
-    SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Error while initializing IMG: %s", SDL_GetError());
-    exit(1);
-  }
+  IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 }
 
 void quit_SDL(App* app) {
