@@ -1,8 +1,7 @@
 #ifndef BLUE_MAX_DRAW_H
 #define BLUE_MAX_DRAW_H
 
-#include "Vector.h"
-#include "Box.h"
+#include "geometry.h"
 #include "defs.h"
 
 void draw_point(const App* app, const Vector* p);

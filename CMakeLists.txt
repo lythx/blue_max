@@ -4,18 +4,19 @@ project(blue_max)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(${PROJECT_NAME} src/main.c
-        src/Vector.c
-        src/Vector.h
+        src/geometry/Vector.c
+        src/geometry/Vector.h
         src/config.h
-        src/Sphere.c
-        src/Sphere.h
-        src/Box.c
-        src/Box.h
+        src/geometry/Sphere.c
+        src/geometry/Sphere.h
+        src/geometry/Box.c
+        src/geometry/Box.h
         src/defs.h
         src/init_SDL.c
         src/init_SDL.h
         src/draw.c
         src/draw.h
+        src/geometry.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

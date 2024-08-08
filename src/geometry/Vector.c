@@ -1,7 +1,7 @@
 #include "Vector.h"
 #include "SDL.h"
 #include "math.h"
-#include "defs.h"
+#include "../defs.h"
 
 #define SIN ROTATION_SIN
 #define COS ROTATION_COS
