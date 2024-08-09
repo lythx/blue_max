@@ -54,7 +54,6 @@ void draw_box(const App* app, const Box* b) {
 
 void draw_hitboxes(const App* app, const Box* hitboxes, size_t size) {
   for(size_t i = 0; i < size; i++) {
-    box_print(&hitboxes[i]);
     draw_box(app, &hitboxes[i]);
   }
 }
