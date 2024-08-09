@@ -18,4 +18,7 @@ typedef struct {
 #define PLANE_WINGS_HEIGHT 20.0
 #define PLANE_WINGS_WIDTH 400.0
 
+#define PLAYER_HORIZONTAL_SPEED 0.01
+#define PLAYER_VERTICAL_SPEED 0.01
+
 #endif //BLUE_MAX_DEFS_H
