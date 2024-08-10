@@ -17,17 +17,20 @@ int main(int argc, char* argv[]) {
 
   SDL_Event event;
   Vector pos = vector_create(300, 300, 0);
-  Player player = player_create(&pos);
+  Player player = player_create(&app, &pos);
   int running = 1;
+
   while (running) {
     running = handle_input(&event, &player);
 
     player_move(&player);
 
-    SDL_SetRenderDrawColor(app.renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(app.renderer, 0,  80, 0, 255);
     SDL_RenderClear(app.renderer);
     SDL_SetRenderDrawColor(app.renderer, 255, 255, 255, 255);
+    draw_texture(&app, player.texture, &player.pos);
     draw_hitboxes(&app, player.hitboxes, 2);
+
     SDL_RenderPresent(app.renderer);
   }
 
