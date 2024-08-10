@@ -2,6 +2,7 @@
 #define BLUE_MAX_PLAYER_H
 
 #include "geometry.h"
+#include "draw.h"
 
 typedef struct {
   Vector pos;
@@ -10,9 +11,10 @@ typedef struct {
   int down;
   int left;
   int right;
+  SDL_Texture* texture;
 } Player;
 
-Player player_create(Vector* pos);
+Player player_create(const App* app, Vector* pos);
 
 void player_handle_keydown(Player* player, int keycode);
 

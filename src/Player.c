@@ -1,7 +1,8 @@
 #include "Player.h"
 #include "defs.h"
+#include "init_SDL.h"
 
-Player player_create(Vector* pos) {
+Player player_create(const App* app, Vector* pos) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,
                                          PLANE_BODY_WIDTH, PLANE_BODY_HEIGHT);
   Box wings_hb = box_create_around_center(pos, PLANE_WINGS_LENGTH,
@@ -9,10 +10,11 @@ Player player_create(Vector* pos) {
   Box* hitboxes = malloc(sizeof(Box) * 2);
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
-  return (Player) {*pos, hitboxes};
+  SDL_Texture* texture = load_texture(app, "../assets/player.png");
+  return (Player) {*pos, hitboxes, 0, 0, 0, 0, texture};
 }
 
-void _handle_key(Player* player, int keycode, int value_to_set) {
+void handle_key(Player* player, int keycode, int value_to_set) {
   switch (keycode) {
     case SDL_SCANCODE_UP:
       player->up = value_to_set;
@@ -25,15 +27,18 @@ void _handle_key(Player* player, int keycode, int value_to_set) {
       break;
     case SDL_SCANCODE_RIGHT:
       player->right = value_to_set;
+      break;
+    default:
+      break;
   }
 }
 
 void player_handle_keydown(Player* player, int keycode) {
-  _handle_key(player, keycode, 1);
+  handle_key(player, keycode, 1);
 }
 
 void player_handle_keyup(Player* player, int keycode) {
-  _handle_key(player, keycode, 0);
+  handle_key(player, keycode, 0);
 }
 
 void player_move(Player* player) {
