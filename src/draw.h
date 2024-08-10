@@ -12,4 +12,6 @@ void draw_box(const App* app, const Box* b);
 
 void draw_hitboxes(const App* app, const Box* hitboxes, size_t size);
 
+void draw_texture(const App* app, SDL_Texture *texture, const Vector* pos);
+
 #endif //BLUE_MAX_DRAW_H

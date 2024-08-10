@@ -1,5 +1,6 @@
 #include "draw.h"
 #include "config.h"
+#include "SDL_image.h"
 
 void translate_vector(Vector* v) {
   double vx = v->x;
@@ -56,4 +57,16 @@ void draw_hitboxes(const App* app, const Box* hitboxes, size_t size) {
   for(size_t i = 0; i < size; i++) {
     draw_box(app, &hitboxes[i]);
   }
+}
+
+void draw_texture(const App* app, SDL_Texture *texture, const Vector* pos) {
+  Vector pos_copy = vector_copy(pos);
+  translate_vector(&pos_copy);
+  SDL_Rect dest;
+  dest.x = (int) pos_copy.x;
+  dest.y = (int) pos_copy.y;
+  SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+  dest.x -= dest.w / 2;
+  dest.y -= dest.h / 2;
+  SDL_RenderCopy(app->renderer, texture, NULL, &dest);
 }
