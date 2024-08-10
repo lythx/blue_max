@@ -33,3 +33,10 @@ void quit_SDL(App* app) {
   SDL_DestroyWindow(app->window);
   SDL_Quit();
 }
+
+SDL_Texture* load_texture(const App* app, const char* filename) {
+  SDL_Texture *texture;
+  SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Loading %s", filename);
+  texture = IMG_LoadTexture(app->renderer, filename);
+  return texture;
+}
