@@ -42,14 +42,24 @@ void player_handle_keyup(Player* player, int keycode) {
 }
 
 void player_move(Player* player) {
-  Vector v = vector_create(0,
+  Vector diff = vector_create(0,
                            (player->right - player->left) * PLAYER_HORIZONTAL_SPEED,
                            (player->up - player->down) * PLAYER_VERTICAL_SPEED);
-  vector_sum(&player->pos, &v);
-  player->hitboxes[0].x += v.x;
-  player->hitboxes[0].y += v.y;
-  player->hitboxes[0].z += v.z;
-  player->hitboxes[1].x += v.x;
-  player->hitboxes[1].y += v.y;
-  player->hitboxes[1].z += v.z;
+  Vector new_pos = vector_copy(&player->pos);
+  vector_sum(&new_pos, &diff);
+  if (new_pos.y < PLAYER_LEFT_BOUND) {
+    new_pos.y = PLAYER_LEFT_BOUND;
+  } else if (player->pos.y > PLAYER_RIGHT_BOUND) {
+    new_pos.y = PLAYER_RIGHT_BOUND;
+  }
+  if (new_pos.z > PLAYER_UP_BOUND) {
+    new_pos.z = PLAYER_UP_BOUND;
+  }
+  diff.y = new_pos.y - player->pos.y;
+  diff.z = new_pos.z - player->pos.z;
+  vector_sum(&player->pos, &diff);
+  player->hitboxes[0].y += diff.y;
+  player->hitboxes[0].z += diff.z;
+  player->hitboxes[1].y += diff.y;
+  player->hitboxes[1].z += diff.z;
 }
