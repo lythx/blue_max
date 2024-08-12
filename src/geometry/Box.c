@@ -22,12 +22,23 @@ Box box_create_around_center(const Vector* center,
 }
 
 int box_intersects(const Box* b1, const Box* b2) {
-  return b1->x <= b2->x + b2->length &&
-         b1->x + b1->length >= b2->x &&
-         b1->y <= b2->y + b2->width &&
-         b1->y + b1->width >= b2->y &&
-         b1->z <= b2->z + b2->height &&
-         b1->z + b1->height >= b2->z;
+  if (b1->z > b2->z + b2->height || b2->z > b1->z + b1->height) {
+    return 0;
+  }
+  Vector slope1 = vector_create(b1->length, 0.0, 0.0);
+  Vector slope2 = vector_create(b2->length, 0.0, 0.0);
+  vector_rotate(&slope1);
+  vector_rotate(&slope2);
+  if (b1->x > b2->x + slope2.x || b2->x > b1->x + slope1.x) {
+    return 0;
+  }
+  double tan = ROTATION_SIN / ROTATION_COS;
+  double y1 = b1->y - b1->x * tan;
+  double y2 = b2->y - b2->x * tan;
+  return (y2 <= y1 && y1 <= y2 + b2->width) ||
+         (y1 <= y2 && y2 <= y1 + b1->width) ||
+         (y2 <= y1 + b1->width && y1 + b1->width <= y2 + b2->width) ||
+         (y1 <= y2 + b2->width && y2 + b2->width <= y1 + b1->width);
 }
 
 int box_point_intersects(const Box* b, const Vector* p) {
