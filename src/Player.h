@@ -3,6 +3,7 @@
 
 #include "geometry.h"
 #include "draw.h"
+#include "Projectile.h"
 
 typedef struct {
   Vector pos;
@@ -21,5 +22,7 @@ void player_handle_keydown(Player* player, int keycode);
 void player_handle_keyup(Player* player, int keycode);
 
 void player_move(Player* player);
+
+Projectile player_shoot(const App* app, const Player* player);
 
 #endif //BLUE_MAX_PLAYER_H

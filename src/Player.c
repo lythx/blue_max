@@ -63,3 +63,9 @@ void player_move(Player* player) {
   player->hitboxes[1].y += diff.y;
   player->hitboxes[1].z += diff.z;
 }
+
+Projectile player_shoot(const App* app, const Player* player) {
+  Vector pos = vector_copy(&player->pos);
+  return projectile_create(app, &pos);
+}
+
