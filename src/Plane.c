@@ -22,3 +22,7 @@ void plane_move(Plane* plane) {
   plane->hitboxes[1].x += diff.x;
   plane->hitboxes[1].y += diff.y;
 }
+
+void plane_destroy(Plane* plane) {
+  free(plane->hitboxes);
+}

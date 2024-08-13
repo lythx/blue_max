@@ -21,4 +21,6 @@ Plane plane_create(const App* app, Vector* pos);
 
 void plane_move(Plane* plane);
 
+void plane_destroy(Plane* plane);
+
 #endif //BLUE_MAX_PLANE_H
