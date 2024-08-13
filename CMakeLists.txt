@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/geometry.h
         src/Plane.c
         src/Plane.h
+        src/Projectile.c
+        src/Projectile.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
