@@ -1,5 +1,4 @@
 #include "Box.h"
-#include "SDL.h"
 #include "../defs.h"
 
 Box box_create(double x, double y, double z,
@@ -32,9 +31,9 @@ int box_intersects(const Box* b1, const Box* b2) {
   if (b1->x > b2->x + slope2.x || b2->x > b1->x + slope1.x) {
     return 0;
   }
-  double tan = ROTATION_SIN / ROTATION_COS;
-  double y1 = b1->y - b1->x * tan;
-  double y2 = b2->y - b2->x * tan;
+  double tang = ROTATION_SIN / ROTATION_COS;
+  double y1 = b1->y - b1->x * tang;
+  double y2 = b2->y - b2->x * tang;
   return (y2 <= y1 && y1 <= y2 + b2->width) ||
          (y1 <= y2 && y2 <= y1 + b1->width) ||
          (y2 <= y1 + b1->width && y1 + b1->width <= y2 + b2->width) ||
@@ -52,6 +51,36 @@ int box_point_intersects(const Box* b, const Vector* p) {
   }
   double y_min = b->y + ((p->x - b->x) * slope.y) / slope.x;
   return y_min <= p->y && p->y <= y_min + b->width;
+}
+
+int box_intersects_array(const Box* arr1, uint8_t size1, const Box* arr2, uint8_t size2) {
+  Vector slope1, slope2;
+  for (uint8_t i = 0; i < size1; i++) {
+    const Box* b1 = &arr1[i];
+    slope1 = vector_create(b1->length, 0.0, 0.0);
+    vector_rotate(&slope1);
+    for (uint8_t j = 0; j < size2; j++) {
+      const Box* b2 = &arr2[j];
+      if (b1->z > b2->z + b2->height || b2->z > b1->z + b1->height) {
+        continue;
+      }
+      slope2 = vector_create(b2->length, 0.0, 0.0);
+      vector_rotate(&slope2);
+      if (b1->x > b2->x + slope2.x || b2->x > b1->x + slope1.x) {
+        continue;
+      }
+      double tang = ROTATION_SIN / ROTATION_COS;
+      double y1 = b1->y - b1->x * tang;
+      double y2 = b2->y - b2->x * tang;
+      if ((y2 <= y1 && y1 <= y2 + b2->width) ||
+             (y1 <= y2 && y2 <= y1 + b1->width) ||
+             (y2 <= y1 + b1->width && y1 + b1->width <= y2 + b2->width) ||
+             (y1 <= y2 + b2->width && y2 + b2->width <= y1 + b1->width)) {
+        return 1;
+      }
+    }
+  }
+  return 0;
 }
 
 void box_print(const Box* b) {

@@ -2,6 +2,7 @@
 #define BLUE_MAX_BOX_H
 
 #include "Vector.h"
+#include "SDL.h"
 
 typedef struct {
     double x;
@@ -21,6 +22,8 @@ Box box_create_around_center(const Vector* center,
 int box_intersects(const Box* b1, const Box* b2);
 
 int box_point_intersects(const Box* b, const Vector* p);
+
+int box_intersects_array(const Box* arr1, uint8_t size1, const Box* arr2, uint8_t size2);
 
 void box_print(const Box* b);
 
