@@ -11,8 +11,14 @@ Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
 Projectile player_projectiles[MAX_PROJECTILES];
 uint8_t player_projectile_count = 0;
+Projectile up_projectiles[MAX_PROJECTILES];
+uint8_t up_projectile_count = 0;
+Projectile down_projectiles[MAX_PROJECTILES];
+uint8_t down_projectile_count = 0;
 
 int handle_input(const App* app, SDL_Event* event, Player* player);
+void move_planes_and_projectiles(Player* player);
+int handle_collisions(Player* player);
 
 int main(int argc, char* argv[]) {
   if (DEBUG_MODE == 1){
@@ -35,12 +41,9 @@ int main(int argc, char* argv[]) {
   while (running) {
     running = handle_input(&app, &event, &player);
 
-    player_move(&player);
-    for (uint8_t i = 0; i < plane_count; i++) {
-      plane_move(&planes[i]);
-    }
-    for (uint8_t i = 0; i < player_projectile_count; i++) {
-      projectile_move(&player_projectiles[i], PROJECTILE_PLAYER);
+    move_planes_and_projectiles(&player);
+    if (handle_collisions(&player)) {
+      break;
     }
 
     SDL_SetRenderDrawColor(app.renderer, 0,  80, 0, 255);
@@ -56,15 +59,7 @@ int main(int argc, char* argv[]) {
       draw_texture(&app, player_projectiles[i].texture, &player_projectiles[i].pos);
       draw_box(&app, &player_projectiles[i].hitbox);
     }
-    for (uint8_t i = 0; i < plane_count; i++) {
-      if (box_intersects(&player.hitboxes[0], &planes[i].hitboxes[0]) ||
-          box_intersects(&player.hitboxes[1], &planes[i].hitboxes[0]) ||
-          box_intersects(&player.hitboxes[0], &planes[i].hitboxes[1]) ||
-          box_intersects(&player.hitboxes[1], &planes[i].hitboxes[1])) {
-        plane_destroy(&planes[i]);
-        plane_count -= 1;
-      }
-    }
+
 
     SDL_RenderPresent(app.renderer);
   }
@@ -97,4 +92,50 @@ int handle_input(const App* app, SDL_Event* event, Player* player) {
     }
   }
   return 1;
+}
+
+void move_planes_and_projectiles(Player* player) {
+  player_move(player);
+  for (uint8_t i = 0; i < plane_count; i++) {
+    plane_move(&planes[i]);
+  }
+  for (uint8_t i = 0; i < player_projectile_count; i++) {
+    projectile_move(&player_projectiles[i], PROJECTILE_PLAYER);
+  }
+  for (uint8_t i = 0; i < up_projectile_count; i++) {
+    projectile_move(&up_projectiles[i], PROJECTILE_PLANE_UP);
+  }
+  for (uint8_t i = 0; i < down_projectile_count; i++) {
+    projectile_move(&down_projectiles[i], PROJECTILE_PLANE_DOWN);
+  }
+}
+
+int handle_collisions(Player* player) {
+  for (uint8_t i = 0; i < plane_count; i++) {
+    if (box_intersects_array(player->hitboxes, 2, planes[i].hitboxes, 2)) {
+      plane_destroy(&planes[i]);
+      return 1;
+    }
+  }
+  for (uint8_t i = 0; i < player_projectile_count; i++) {
+    for (uint8_t j = 0; j < plane_count; j++) {
+      if (box_intersects_array(&player_projectiles[i].hitbox, 1, planes[j].hitboxes, 1)) {
+        plane_destroy(&planes[j]);
+        planes[j] = planes[plane_count - 1];
+        plane_count--;
+        j--;
+      }
+    }
+  }
+  for (uint8_t i = 0; i < up_projectile_count; i++) {
+    if (box_intersects_array(&up_projectiles[i].hitbox, 1, player->hitboxes, 2)) {
+      return 1;
+    }
+  }
+  for (uint8_t i = 0; i < down_projectile_count; i++) {
+    if (box_intersects_array(&down_projectiles[i].hitbox, 1, player->hitboxes, 2)) {
+      return 1;
+    }
+  }
+  return 0;
 }
