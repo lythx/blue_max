@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Plane.h"
 #include "Projectile.h"
+#include "Building.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -15,6 +16,8 @@ Projectile up_projectiles[MAX_PROJECTILES];
 uint8_t up_projectile_count = 0;
 Projectile down_projectiles[MAX_PROJECTILES];
 uint8_t down_projectile_count = 0;
+Building buildings[MAX_BUILDINGS];
+uint8_t building_count = 0;
 
 int handle_input(const App* app, SDL_Event* event, Player* player);
 void move_planes_and_projectiles(Player* player);
@@ -32,6 +35,8 @@ int main(int argc, char* argv[]) {
   Vector pos = vector_create(300, 300, 0);
   Vector enemy_pos = vector_create(500, 500, 0);
   Vector enemy_pos2 = vector_create(400, 300, 100);
+  buildings[0] = building_create(&app, 300, 200, 100, 100, 100);
+  building_count = 1;
   Player player = player_create(&app, &pos);
   planes[0] = plane_create(&app, &enemy_pos);
   planes[1] = plane_create(&app, &enemy_pos2);
@@ -58,6 +63,12 @@ int main(int argc, char* argv[]) {
     for (uint8_t i = 0; i < player_projectile_count; i++) {
       draw_texture(&app, player_projectiles[i].texture, &player_projectiles[i].pos);
       draw_box(&app, &player_projectiles[i].hitbox);
+    }
+    for (uint8_t i = 0; i < building_count; i++) {
+      Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);
+      draw_texture(&app, buildings[i].texture, &building_pos);
+      Box building_hb = building_hitbox(&buildings[i]);
+      draw_box(&app, &building_hb);
     }
 
 
@@ -134,6 +145,12 @@ int handle_collisions(Player* player) {
   }
   for (uint8_t i = 0; i < down_projectile_count; i++) {
     if (box_intersects_array(&down_projectiles[i].hitbox, 1, player->hitboxes, 2)) {
+      return 1;
+    }
+  }
+  for (uint8_t i = 0; i < building_count; i++) {
+    Box building_hb = building_hitbox(&buildings[i]);
+    if (box_intersects_array(&building_hb, 1, player->hitboxes, 2)) {
       return 1;
     }
   }

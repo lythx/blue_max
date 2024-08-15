@@ -21,8 +21,9 @@ typedef struct {
 #define PLANE_UP_SPEED 0.02
 #define PLANE_DOWN_SPEED 0.01
 
-#define MAX_PLANES 4
+#define MAX_PLANES 128
 #define MAX_PROJECTILES 128
+#define MAX_BUILDINGS 128
 
 #define PLAYER_HORIZONTAL_SPEED 0.1
 #define PLAYER_VERTICAL_SPEED 0.1
