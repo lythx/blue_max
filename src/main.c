@@ -20,7 +20,7 @@ Building buildings[MAX_BUILDINGS];
 uint8_t building_count = 0;
 
 int handle_input(const App* app, SDL_Event* event, Player* player);
-void move_planes_and_projectiles(Player* player);
+void move_center_and_entities(Player* player, Vector* center);
 int handle_collisions(Player* player);
 
 int main(int argc, char* argv[]) {
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
   App app;
   init_SDL(&app);
-
+  Vector center = vector_create((double) WINDOW_HEIGHT / 2, (double) WINDOW_WIDTH / 2, 0);
   SDL_Event event;
   Vector pos = vector_create(300, 300, 0);
   Vector enemy_pos = vector_create(500, 500, 0);
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
   while (running) {
     running = handle_input(&app, &event, &player);
 
-    move_planes_and_projectiles(&player);
+    move_center_and_entities(&player, &center);
     if (handle_collisions(&player)) {
       break;
     }
@@ -54,23 +54,23 @@ int main(int argc, char* argv[]) {
     SDL_SetRenderDrawColor(app.renderer, 0,  80, 0, 255);
     SDL_RenderClear(app.renderer);
     SDL_SetRenderDrawColor(app.renderer, 255, 255, 255, 255);
-    draw_texture(&app, player.texture, &player.pos);
-    draw_hitboxes(&app, player.hitboxes, 2);
+    draw_texture(&app, &center, player.texture, &player.pos);
+    draw_hitboxes(&app, &center, player.hitboxes, 2);
     for (uint8_t i = 0; i < plane_count; i++) {
-      draw_texture(&app, planes[i].texture, &planes[i].pos);
-      draw_hitboxes(&app, planes[i].hitboxes, 2);
+      draw_texture(&app, &center, planes[i].texture, &planes[i].pos);
+      draw_hitboxes(&app, &center, planes[i].hitboxes, 2);
     }
     for (uint8_t i = 0; i < player_projectile_count; i++) {
-      draw_texture(&app, player_projectiles[i].texture, &player_projectiles[i].pos);
-      draw_box(&app, &player_projectiles[i].hitbox);
+      draw_texture(&app, &center, player_projectiles[i].texture, &player_projectiles[i].pos);
+      draw_box(&app, &center, &player_projectiles[i].hitbox);
     }
     for (uint8_t i = 0; i < building_count; i++) {
       Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);
-      draw_texture(&app, buildings[i].texture, &building_pos);
+      draw_texture(&app, &center, buildings[i].texture, &building_pos);
       Box building_hb = building_hitbox(&buildings[i]);
-      draw_box(&app, &building_hb);
+      draw_box(&app, &center, &building_hb);
     }
-
+    draw_point(&app, &center, &center);
 
     SDL_RenderPresent(app.renderer);
   }
@@ -105,8 +105,8 @@ int handle_input(const App* app, SDL_Event* event, Player* player) {
   return 1;
 }
 
-void move_planes_and_projectiles(Player* player) {
-  player_move(player);
+void move_center_and_entities(Player* player, Vector* center) {
+  player_move(player, center);
   for (uint8_t i = 0; i < plane_count; i++) {
     plane_move(&planes[i]);
   }

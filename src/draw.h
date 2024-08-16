@@ -4,14 +4,14 @@
 #include "geometry.h"
 #include "defs.h"
 
-void draw_point(const App* app, const Vector* p);
+void draw_point(const App* app, const Vector* center, const Vector* p);
 
-void draw_line(const App* app, const Vector* a, const Vector* b);
+void draw_line(const App* app, const Vector* center, const Vector* a, const Vector* b);
 
-void draw_box(const App* app, const Box* b);
+void draw_box(const App* app, const Vector* center, const Box* b);
 
-void draw_hitboxes(const App* app, const Box* hitboxes, size_t size);
+void draw_hitboxes(const App* app, const Vector* center, const Box* hitboxes, size_t size);
 
-void draw_texture(const App* app, SDL_Texture *texture, const Vector* pos);
+void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, const Vector* pos);
 
 #endif //BLUE_MAX_DRAW_H

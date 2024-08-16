@@ -21,7 +21,7 @@ void player_handle_keydown(Player* player, int keycode);
 
 void player_handle_keyup(Player* player, int keycode);
 
-void player_move(Player* player);
+void player_move(Player* player, Vector* center);
 
 Projectile player_shoot(const App* app, const Player* player);
 
