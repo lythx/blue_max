@@ -17,7 +17,7 @@ typedef struct {
     SDL_Texture* texture;
 } Plane;
 
-Plane plane_create(const App* app, Vector* pos);
+Plane plane_create(const App* app, Vector* pos, PLANE_DIRECTION direction);
 
 void plane_move(Plane* plane);
 
