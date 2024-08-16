@@ -51,10 +51,12 @@ void player_move(Player* player, Vector* center) {
   vector_sum(&diff, &forward);
   Vector new_pos = vector_copy(&player->pos);
   vector_sum(&new_pos, &diff);
-  if (new_pos.y < PLAYER_LEFT_BOUND) {
-    new_pos.y = PLAYER_LEFT_BOUND;
-  } else if (player->pos.y > PLAYER_RIGHT_BOUND) {
-    new_pos.y = PLAYER_RIGHT_BOUND;
+  double lbound = center->y - PLAYER_HORIZONTAL_BOUND;
+  double rbound = center->y + PLAYER_HORIZONTAL_BOUND;
+  if (new_pos.y < lbound) {
+    new_pos.y = lbound;
+  } else if (player->pos.y > rbound) {
+    new_pos.y = rbound;
   }
   if (new_pos.z > PLAYER_UP_BOUND) {
     new_pos.z = PLAYER_UP_BOUND;
