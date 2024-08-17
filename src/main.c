@@ -51,6 +51,7 @@ int main(int argc, char* argv[]) {
     running = handle_input(&app, &event, &player);
 
     generate_plane(&app, &center, planes, &plane_count);
+    generate_building(&app, &center, buildings, &building_count);
 
     move_center_and_entities(&player, &center);
     if (handle_collisions(&player)) {
