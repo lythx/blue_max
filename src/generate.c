@@ -9,6 +9,9 @@ typedef enum {
 Vector get_random_position(const Vector* center, DIRECTION direction);
 
 void generate_plane(const App* app, const Vector* center, Plane* planes, uint8_t* plane_count) {
+  if (*plane_count == MAX_PLANES) {
+    return;
+  }
   int r = rand();
   if (r > SPAWN_PLANE_CHANCE * RAND_MAX) {
     return;
@@ -19,9 +22,18 @@ void generate_plane(const App* app, const Vector* center, Plane* planes, uint8_t
     direction = PLANE_UP;
   }
   Vector pos;
+  int collision;
   do {
+    collision = 0;
     pos = get_random_position(center, direction == PLANE_DOWN ? UP : DOWN);
-  } while(0);
+    Box path = box_create_around_center(&pos, SPAWN_DISTANCE_TO_CENTER * 5, PLANE_WINGS_WIDTH, PLANE_BODY_HEIGHT);
+    for (uint8_t i = 0; i < *plane_count; i++) {
+      if (box_intersects_array(planes[i].hitboxes, 2, &path, 1)) {
+        collision = 1;
+        break;
+      }
+    }
+  } while(collision);
   planes[*plane_count] = plane_create(app, &pos, direction);
   (*plane_count)++;
 }
