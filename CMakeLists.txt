@@ -25,6 +25,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/Projectile.h
         src/Building.c
         src/Building.h
+        src/generate.c
+        src/generate.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
