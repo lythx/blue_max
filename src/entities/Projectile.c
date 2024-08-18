@@ -1,5 +1,5 @@
 #include "Projectile.h"
-#include "init_SDL.h"
+#include "../init_SDL.h"
 
 Projectile projectile_create(const App* app, Vector* pos) {
   Box hitbox = box_create_around_center(pos, PROJECTILE_LENGTH,

@@ -2,8 +2,8 @@
 #define BLUE_MAX_PLANE_H
 
 #include "SDL.h"
-#include "geometry.h"
-#include "defs.h"
+#include "../geometry.h"
+#include "../defs.h"
 
 typedef enum {
     PLANE_UP = 1,

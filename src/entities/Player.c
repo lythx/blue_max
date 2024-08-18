@@ -1,6 +1,6 @@
 #include "Player.h"
-#include "defs.h"
-#include "init_SDL.h"
+#include "../defs.h"
+#include "../init_SDL.h"
 
 Player player_create(const App* app, Vector* pos) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,

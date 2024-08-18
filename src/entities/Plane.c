@@ -1,5 +1,5 @@
 #include "Plane.h"
-#include "init_SDL.h"
+#include "../init_SDL.h"
 
 Plane plane_create(const App* app, Vector* pos, PLANE_DIRECTION direction) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,

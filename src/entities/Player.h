@@ -1,8 +1,8 @@
 #ifndef BLUE_MAX_PLAYER_H
 #define BLUE_MAX_PLAYER_H
 
-#include "geometry.h"
-#include "draw.h"
+#include "../geometry.h"
+#include "../draw.h"
 #include "Projectile.h"
 
 typedef struct {

@@ -16,17 +16,18 @@ add_executable(${PROJECT_NAME} src/main.c
         src/init_SDL.h
         src/draw.c
         src/draw.h
-        src/Player.c
-        src/Player.h
+        src/entities/Player.c
+        src/entities/Player.h
         src/geometry.h
-        src/Plane.c
-        src/Plane.h
-        src/Projectile.c
-        src/Projectile.h
-        src/Building.c
-        src/Building.h
+        src/entities/Plane.c
+        src/entities/Plane.h
+        src/entities/Projectile.c
+        src/entities/Projectile.h
+        src/entities/Building.c
+        src/entities/Building.h
         src/generate.c
         src/generate.h
+        src/entities.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

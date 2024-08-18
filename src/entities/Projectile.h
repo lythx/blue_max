@@ -1,9 +1,9 @@
 #ifndef BLUE_MAX_PROJECTILE_H
 #define BLUE_MAX_PROJECTILE_H
 
-#include "defs.h"
+#include "../defs.h"
 #include "SDL.h"
-#include "geometry.h"
+#include "../geometry.h"
 
 typedef enum {
     PROJECTILE_PLAYER = 0,

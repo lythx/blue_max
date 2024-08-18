@@ -1,5 +1,5 @@
 #include "Building.h"
-#include "init_SDL.h"
+#include "../init_SDL.h"
 
 Building building_create(const App* app, double x, double y, double length, double width, double height) {
   SDL_Texture* texture = load_texture(app, "../assets/player.png");
