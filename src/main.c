@@ -3,13 +3,11 @@
 #include "init_SDL.h"
 #include "geometry.h"
 #include "draw.h"
-#include "Player.h"
-#include "Plane.h"
-#include "Projectile.h"
-#include "Building.h"
+#include "entities.h"
 #include "stdlib.h"
 #include "time.h"
 #include "generate.h"
+#include "update.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -23,8 +21,6 @@ Building buildings[MAX_BUILDINGS];
 uint8_t building_count = 0;
 
 int handle_input(const App* app, SDL_Event* event, Player* player);
-void move_center_and_entities(Player* player, Vector* center);
-int handle_collisions(Player* player);
 
 int main(int argc, char* argv[]) {
   srand(time(NULL));
@@ -53,8 +49,12 @@ int main(int argc, char* argv[]) {
     generate_plane(&app, &center, planes, &plane_count);
     generate_building(&app, &center, buildings, &building_count);
 
-    move_center_and_entities(&player, &center);
-    if (handle_collisions(&player)) {
+    if (update_all(&center, &player,
+                   buildings, &building_count,
+                   planes, &plane_count,
+                   player_projectiles, &player_projectile_count,
+                   up_projectiles, &up_projectile_count,
+                   down_projectiles, &down_projectile_count)) {
       break;
     }
 
@@ -111,56 +111,4 @@ int handle_input(const App* app, SDL_Event* event, Player* player) {
     }
   }
   return 1;
-}
-
-void move_center_and_entities(Player* player, Vector* center) {
-  player_move(player, center);
-  for (uint8_t i = 0; i < plane_count; i++) {
-    plane_move(&planes[i]);
-  }
-  for (uint8_t i = 0; i < player_projectile_count; i++) {
-    projectile_move(&player_projectiles[i], PROJECTILE_PLAYER);
-  }
-  for (uint8_t i = 0; i < up_projectile_count; i++) {
-    projectile_move(&up_projectiles[i], PROJECTILE_PLANE_UP);
-  }
-  for (uint8_t i = 0; i < down_projectile_count; i++) {
-    projectile_move(&down_projectiles[i], PROJECTILE_PLANE_DOWN);
-  }
-}
-
-int handle_collisions(Player* player) {
-  for (uint8_t i = 0; i < plane_count; i++) {
-    if (box_intersects_array(player->hitboxes, 2, planes[i].hitboxes, 2)) {
-      plane_destroy(&planes[i]);
-      return 1;
-    }
-  }
-  for (uint8_t i = 0; i < player_projectile_count; i++) {
-    for (uint8_t j = 0; j < plane_count; j++) {
-      if (box_intersects_array(&player_projectiles[i].hitbox, 1, planes[j].hitboxes, 1)) {
-        plane_destroy(&planes[j]);
-        planes[j] = planes[plane_count - 1];
-        plane_count--;
-        j--;
-      }
-    }
-  }
-  for (uint8_t i = 0; i < up_projectile_count; i++) {
-    if (box_intersects_array(&up_projectiles[i].hitbox, 1, player->hitboxes, 2)) {
-      return 1;
-    }
-  }
-  for (uint8_t i = 0; i < down_projectile_count; i++) {
-    if (box_intersects_array(&down_projectiles[i].hitbox, 1, player->hitboxes, 2)) {
-      return 1;
-    }
-  }
-  for (uint8_t i = 0; i < building_count; i++) {
-    Box building_hb = building_hitbox(&buildings[i]);
-    if (box_intersects_array(&building_hb, 1, player->hitboxes, 2)) {
-      return 1;
-    }
-  }
-  return 0;
 }
