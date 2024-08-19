@@ -13,10 +13,8 @@ Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
 Projectile player_projectiles[MAX_PROJECTILES];
 uint8_t player_projectile_count = 0;
-Projectile up_projectiles[MAX_PROJECTILES];
-uint8_t up_projectile_count = 0;
-Projectile down_projectiles[MAX_PROJECTILES];
-uint8_t down_projectile_count = 0;
+Projectile plane_projectiles[MAX_PROJECTILES];
+uint8_t plane_projectile_count = 0;
 Building buildings[MAX_BUILDINGS];
 uint8_t building_count = 0;
 
@@ -53,8 +51,7 @@ int main(int argc, char* argv[]) {
                    buildings, &building_count,
                    planes, &plane_count,
                    player_projectiles, &player_projectile_count,
-                   up_projectiles, &up_projectile_count,
-                   down_projectiles, &down_projectile_count)) {
+                   plane_projectiles, &plane_projectile_count)) {
       break;
     }
 

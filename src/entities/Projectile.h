@@ -15,10 +15,11 @@ typedef struct {
     Vector pos;
     Box hitbox;
     SDL_Texture* texture;
+    PROJECTILE_ORIGIN origin;
 } Projectile;
 
-Projectile projectile_create(const App* app, Vector* pos);
+Projectile projectile_create(const App* app, Vector* pos, PROJECTILE_ORIGIN origin);
 
-void projectile_move(Projectile* projectile, PROJECTILE_ORIGIN origin);
+void projectile_move(Projectile* projectile);
 
 #endif //BLUE_MAX_PROJECTILE_H

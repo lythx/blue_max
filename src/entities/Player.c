@@ -74,6 +74,6 @@ void player_move(Player* player, Vector* center) {
 
 Projectile player_shoot(const App* app, const Player* player) {
   Vector pos = vector_copy(&player->pos);
-  return projectile_create(app, &pos);
+  return projectile_create(app, &pos, PROJECTILE_PLAYER);
 }
 
