@@ -1,3 +1,4 @@
+#include <time.h>
 #include "Plane.h"
 #include "../init_SDL.h"
 
@@ -10,7 +11,7 @@ Plane plane_create(const App* app, Vector* pos, PLANE_DIRECTION direction) {
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
   SDL_Texture* texture = load_texture(app, "../assets/player.png");
-  return (Plane) {*pos, hitboxes, direction, texture};
+  return (Plane) {*pos, hitboxes, direction, 0, texture};
 }
 
 void plane_move(Plane* plane) {
@@ -21,6 +22,12 @@ void plane_move(Plane* plane) {
   plane->hitboxes[0].y += diff.y;
   plane->hitboxes[1].x += diff.x;
   plane->hitboxes[1].y += diff.y;
+}
+
+Projectile plane_shoot(const App* app, Plane* plane) {
+  Vector pos = vector_copy(&plane->pos);
+  plane->last_shot_timestamp = time(NULL);
+  return projectile_create(app, &pos, plane->direction == PLANE_UP ? PROJECTILE_PLANE_UP : PROJECTILE_PLANE_DOWN);
 }
 
 void plane_destroy(Plane* plane) {
