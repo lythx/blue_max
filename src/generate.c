@@ -1,5 +1,6 @@
 #include "generate.h"
 #include "stdlib.h"
+#include "utils.h"
 
 typedef enum {
     UP = 1,
@@ -59,6 +60,20 @@ void generate_building(const App* app, const Vector* center, Building* buildings
   } while(too_close);
   buildings[*building_count] = building_create(app, pos.x, pos.y, 100.0, 100.0, 100.0);
   (*building_count)++;
+}
+
+void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_count,
+                          Projectile* plane_projectiles, uint8_t* plane_projectile_count) {
+  long long t = time_ms();
+  for (uint8_t i = 0; i < *plane_count; i++) {
+    if (t - planes[i].last_shot_timestamp < PLANE_RELOAD_TIME_MS) {
+      continue;
+    }
+    if (rand() <= PLANE_SHOOT_CHANCE * RAND_MAX) {
+      plane_projectiles[*plane_projectile_count] = plane_shoot(app, &planes[i]);
+      (*plane_projectile_count)++;
+    }
+  }
 }
 
 Vector get_random_position(const Vector* center, DIRECTION direction) {

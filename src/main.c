@@ -44,6 +44,7 @@ int main(int argc, char* argv[]) {
   while (running) {
     running = handle_input(&app, &event, &player);
 
+    generate_plane_shots(&app, planes, &plane_count, plane_projectiles, &plane_projectile_count);
     generate_plane(&app, &center, planes, &plane_count);
     generate_building(&app, &center, buildings, &building_count);
 
@@ -67,6 +68,10 @@ int main(int argc, char* argv[]) {
     for (uint8_t i = 0; i < player_projectile_count; i++) {
       draw_texture(&app, &center, player_projectiles[i].texture, &player_projectiles[i].pos);
       draw_box(&app, &center, &player_projectiles[i].hitbox);
+    }
+    for (uint8_t i = 0; i < plane_projectile_count; i++) {
+      draw_texture(&app, &center, plane_projectiles[i].texture, &plane_projectiles[i].pos);
+      draw_box(&app, &center, &plane_projectiles[i].hitbox);
     }
     for (uint8_t i = 0; i < building_count; i++) {
       Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);

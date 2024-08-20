@@ -1,4 +1,4 @@
-#include <time.h>
+#include "../utils.h"
 #include "Plane.h"
 #include "../init_SDL.h"
 
@@ -26,7 +26,7 @@ void plane_move(Plane* plane) {
 
 Projectile plane_shoot(const App* app, Plane* plane) {
   Vector pos = vector_copy(&plane->pos);
-  plane->last_shot_timestamp = time(NULL);
+  plane->last_shot_timestamp = time_ms();
   return projectile_create(app, &pos, plane->direction == PLANE_UP ? PROJECTILE_PLANE_UP : PROJECTILE_PLANE_DOWN);
 }
 
