@@ -13,13 +13,13 @@ void generate_plane(const App* app, const Vector* center, Plane* planes, uint8_t
   if (*plane_count == MAX_PLANES) {
     return;
   }
-  int r = rand();
-  if (r > SPAWN_PLANE_CHANCE * RAND_MAX) {
+  double r = rand_0_1();
+  if (r > SPAWN_PLANE_CHANCE) {
     return;
   }
   PLANE_DIRECTION direction = PLANE_DOWN;
   // 50% chance the plane gets spawned up
-  if (r < (SPAWN_PLANE_CHANCE / 2) * RAND_MAX) {
+  if (r < (double) SPAWN_PLANE_CHANCE / 2) {
     direction = PLANE_UP;
   }
   Vector pos;
@@ -40,7 +40,7 @@ void generate_plane(const App* app, const Vector* center, Plane* planes, uint8_t
 }
 
 void generate_building(const App* app, const Vector* center, Building* buildings, uint8_t* building_count) {
-  if (*building_count == MAX_BUILDINGS || rand() > SPAWN_BUILDING_CHANCE * RAND_MAX) {
+  if (*building_count == MAX_BUILDINGS || rand_0_1() > SPAWN_BUILDING_CHANCE) {
     return;
   }
   Vector pos;
@@ -69,7 +69,7 @@ void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_co
     if (t - planes[i].last_shot_timestamp < PLANE_RELOAD_TIME_MS) {
       continue;
     }
-    if (rand() <= PLANE_SHOOT_CHANCE * RAND_MAX) {
+    if (rand_0_1() <= PLANE_SHOOT_CHANCE) {
       plane_projectiles[*plane_projectile_count] = plane_shoot(app, &planes[i]);
       (*plane_projectile_count)++;
     }
@@ -81,10 +81,8 @@ Vector get_random_position(const Vector* center, DIRECTION direction) {
   vector_rotate(&diff);
   Vector spawn = vector_copy(center);
   vector_sum(&spawn, &diff);
-  double horizontal_range = PLAYER_HORIZONTAL_BOUND * 2;
-  double horizontal_offset = ((double) rand() / RAND_MAX) * horizontal_range - PLAYER_HORIZONTAL_BOUND;
-  double vertical_range = PLAYER_UP_BOUND - SPAWN_PLANE_MIN_HEIGHT;
-  double vertical_offset = ((double) rand() / RAND_MAX) * vertical_range;
+  double horizontal_offset = rand_min_max(-PLAYER_HORIZONTAL_BOUND, PLAYER_HORIZONTAL_BOUND);
+  double vertical_offset = rand_min_max(SPAWN_PLANE_MIN_HEIGHT, PLAYER_UP_BOUND);
   Vector offset = vector_create(0, horizontal_offset, vertical_offset);
   vector_sum(&spawn, &offset);
   return spawn;
