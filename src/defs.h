@@ -47,4 +47,8 @@ typedef struct {
 
 #define UNLOAD_DISTANCE_TO_CENTER 1000.0
 
+#define COLOR_GRASS_R 0
+#define COLOR_GRASS_G 80
+#define COLOR_GRASS_B 0
+
 #endif //BLUE_MAX_DEFS_H

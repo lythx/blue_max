@@ -2,12 +2,12 @@
 #include "config.h"
 #include "init_SDL.h"
 #include "geometry.h"
-#include "draw.h"
 #include "entities.h"
 #include "stdlib.h"
 #include "time.h"
 #include "generate.h"
 #include "update.h"
+#include "render.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -56,32 +56,12 @@ int main(int argc, char* argv[]) {
       break;
     }
 
-    SDL_SetRenderDrawColor(app.renderer, 0,  80, 0, 255);
-    SDL_RenderClear(app.renderer);
-    SDL_SetRenderDrawColor(app.renderer, 255, 255, 255, 255);
-    draw_texture(&app, &center, player.texture, &player.pos);
-    draw_hitboxes(&app, &center, player.hitboxes, 2);
-    for (uint8_t i = 0; i < plane_count; i++) {
-      draw_texture(&app, &center, planes[i].texture, &planes[i].pos);
-      draw_hitboxes(&app, &center, planes[i].hitboxes, 2);
-    }
-    for (uint8_t i = 0; i < player_projectile_count; i++) {
-      draw_texture(&app, &center, player_projectiles[i].texture, &player_projectiles[i].pos);
-      draw_box(&app, &center, &player_projectiles[i].hitbox);
-    }
-    for (uint8_t i = 0; i < plane_projectile_count; i++) {
-      draw_texture(&app, &center, plane_projectiles[i].texture, &plane_projectiles[i].pos);
-      draw_box(&app, &center, &plane_projectiles[i].hitbox);
-    }
-    for (uint8_t i = 0; i < building_count; i++) {
-      Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);
-      draw_texture(&app, &center, buildings[i].texture, &building_pos);
-      Box building_hb = building_hitbox(&buildings[i]);
-      draw_box(&app, &center, &building_hb);
-    }
-    draw_point(&app, &center, &center);
+    render_all(&app, &center, &player,
+               buildings, building_count,
+               planes, plane_count,
+               player_projectiles, player_projectile_count,
+               plane_projectiles, plane_projectile_count);
 
-    SDL_RenderPresent(app.renderer);
     SDL_Delay(10);
   }
 
