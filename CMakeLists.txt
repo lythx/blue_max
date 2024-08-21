@@ -34,6 +34,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/utils.h
         src/render.c
         src/render.h
+        src/input.c
+        src/input.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

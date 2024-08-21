@@ -8,6 +8,7 @@
 #include "generate.h"
 #include "update.h"
 #include "render.h"
+#include "input.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -17,8 +18,6 @@ Projectile plane_projectiles[MAX_PROJECTILES];
 uint8_t plane_projectile_count = 0;
 Building buildings[MAX_BUILDINGS];
 uint8_t building_count = 0;
-
-int handle_input(const App* app, SDL_Event* event, Player* player);
 
 int main(int argc, char* argv[]) {
   srand(time(NULL));
@@ -42,7 +41,7 @@ int main(int argc, char* argv[]) {
   int running = 1;
 
   while (running) {
-    running = handle_input(&app, &event, &player);
+    running = handle_input(&app, &event, &player, player_projectiles, &player_projectile_count);
 
     generate_plane_shots(&app, planes, &plane_count, plane_projectiles, &plane_projectile_count);
     generate_plane(&app, &center, planes, &plane_count);
@@ -67,30 +66,4 @@ int main(int argc, char* argv[]) {
 
   quit_SDL(&app);
   return 0;
-}
-
-int handle_input(const App* app, SDL_Event* event, Player* player) {
-  while (SDL_PollEvent(event)) {
-    switch (event->type)
-    {
-      case SDL_QUIT:
-        return 0;
-      case SDL_KEYDOWN:
-        if (event->key.keysym.scancode == SDL_SCANCODE_SPACE) {
-          player_projectiles[player_projectile_count] = player_shoot(app, player);
-          player_projectile_count++;
-          break;
-        }
-        else if (event->key.repeat == 0) {
-          player_handle_keydown(player, event->key.keysym.scancode);
-        }
-        break;
-      case SDL_KEYUP:
-        if (event->key.repeat == 0) {
-          player_handle_keyup(player, event->key.keysym.scancode);
-        }
-        break;
-    }
-  }
-  return 1;
 }
