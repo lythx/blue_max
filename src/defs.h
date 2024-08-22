@@ -24,6 +24,7 @@ typedef struct {
 #define MAX_PLANES 4
 #define MAX_PROJECTILES 128
 #define MAX_BUILDINGS 4
+#define MAX_TREES 256
 
 #define PLAYER_FORWARD_SPEED 3.0
 #define PLAYER_HORIZONTAL_SPEED 4.5
@@ -50,5 +51,8 @@ typedef struct {
 #define COLOR_GRASS_R 0
 #define COLOR_GRASS_G 80
 #define COLOR_GRASS_B 0
+
+#define TREE_WIDTH 2.0
+#define TREE_HEIGHT 5.0
 
 #endif //BLUE_MAX_DEFS_H

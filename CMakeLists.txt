@@ -36,6 +36,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/render.h
         src/input.c
         src/input.h
+        src/entities/Tree.c
+        src/entities/Tree.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

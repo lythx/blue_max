@@ -5,5 +5,6 @@
 #include "entities/Plane.h"
 #include "entities/Player.h"
 #include "entities/Projectile.h"
+#include "entities/Tree.h"
 
 #endif //BLUE_MAX_ENTITIES_H
