@@ -21,7 +21,8 @@ int handle_collisions(Player* player,
                       Building* buildings, uint8_t* building_count,
                       Plane* planes, uint8_t* plane_count,
                       Projectile* player_projectiles, uint8_t* player_projectile_count,
-                      Projectile* plane_projectiles, uint8_t* plane_projectile_count) {
+                      Projectile* plane_projectiles, uint8_t* plane_projectile_count,
+                      Tree* trees, uint8_t* tree_count) {
   for (uint8_t i = 0; i < *plane_count; i++) {
     if (box_intersects_array(player->hitboxes, 2, planes[i].hitboxes, 2)) {
       plane_destroy(&planes[i]);
@@ -52,6 +53,12 @@ int handle_collisions(Player* player,
       return 1;
     }
   }
+  for (uint8_t i = 0; i < *tree_count; i++) {
+    Box tree_hb = tree_hitbox(&trees[i]);
+    if (box_intersects_array(&tree_hb, 1, player->hitboxes, 2)) {
+      return 1;
+    }
+  }
   return 0;
 }
 
@@ -65,7 +72,8 @@ void unload_off_camera(const Vector* center,
                        Building* buildings, uint8_t* building_count,
                        Plane* planes, uint8_t* plane_count,
                        Projectile* player_projectiles, uint8_t* player_projectile_count,
-                       Projectile* plane_projectiles, uint8_t* plane_projectile_count) {
+                       Projectile* plane_projectiles, uint8_t* plane_projectile_count,
+                       Tree* trees, uint8_t* tree_count) {
   Vector v;
   for (uint8_t i = 0; i < *plane_count; i++) {
     v = vector_copy(&planes[i].pos);
@@ -100,21 +108,32 @@ void unload_off_camera(const Vector* center,
       i--;
     }
   }
+  for (uint8_t i = 0; i < *tree_count; i++) {
+    v = vector_create(trees[i].x, trees[i].y, 0);
+    if (should_unload(&v, center)) {
+      trees[i] = trees[*tree_count - 1];
+      (*tree_count)--;
+      i--;
+    }
+  }
 }
 
 int update_all(Vector* center, Player* player,
                Building* buildings, uint8_t* building_count,
                Plane* planes, uint8_t* plane_count,
                Projectile* player_projectiles, uint8_t* player_projectile_count,
-               Projectile* plane_projectiles, uint8_t* plane_projectile_count) {
+               Projectile* plane_projectiles, uint8_t* plane_projectile_count,
+               Tree* trees, uint8_t* tree_count) {
 
   move_center_and_entities(center, player, planes, *plane_count, player_projectiles, *player_projectile_count,
                            plane_projectiles, *plane_projectile_count);
   if (handle_collisions(player, buildings, building_count, planes, plane_count,
-                           player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count)) {
+                           player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count,
+                           trees, tree_count)) {
     return 1;
   }
   unload_off_camera(center, buildings, building_count, planes, plane_count,
-                    player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count);
+                    player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count,
+                    trees, tree_count);
   return 0;
 }
