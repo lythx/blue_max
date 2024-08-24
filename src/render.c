@@ -35,7 +35,8 @@ void render_textures(const App* app, const Vector* center, const Player* player,
                      const Projectile* player_projectiles, uint8_t player_projectile_count,
                      const Projectile* plane_projectiles, uint8_t plane_projectile_count,
                      const Tree* trees, uint8_t tree_count) {
-  draw_texture(app, center, player->texture, &player->pos);
+  SDL_Texture* player_texture = player_get_texture(player);
+  draw_texture(app, center, player_texture, &player->pos);
   for (uint8_t i = 0; i < plane_count; i++) {
     draw_texture(app, center, planes[i].texture, &planes[i].pos);
   }

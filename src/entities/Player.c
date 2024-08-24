@@ -10,8 +10,10 @@ Player player_create(const App* app, Vector* pos) {
   Box* hitboxes = malloc(sizeof(Box) * 2);
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
-  SDL_Texture* texture = load_texture(app, "../assets/player.png");
-  return (Player) {*pos, hitboxes, 0, 0, 0, 0, texture};
+  SDL_Texture* texture_fw = load_texture(app, "../assets/player.png");
+  SDL_Texture* texture_left = load_texture(app, "../assets/player.png");
+  SDL_Texture* texture_right = load_texture(app, "../assets/player.png");
+  return (Player) {*pos, hitboxes, 0, 0, 0, 0, texture_fw, texture_left, texture_right};
 }
 
 void handle_key(Player* player, int keycode, int value_to_set) {
@@ -70,6 +72,17 @@ void player_move(Player* player, Vector* center) {
   player->hitboxes[1].x += diff.x;
   player->hitboxes[1].y += diff.y;
   player->hitboxes[1].z += diff.z;
+}
+
+SDL_Texture* player_get_texture(const Player* player) {
+  int val = player->right - player->left;
+  if (val == 1) {
+    return player->texture_right;
+  }
+  if (val == -1) {
+    return player->texture_left;
+  }
+  return player->texture_forward;
 }
 
 Projectile player_shoot(const App* app, const Player* player) {
