@@ -10,4 +10,6 @@ void generate_building(const App* app, const Vector* center, Building* buildings
 void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_count,
                           Projectile* plane_projectiles, uint8_t* plane_projectile_count);
 
+void generate_trees(const App* app, const Vector* center, Tree* trees, uint8_t* tree_count);
+
 #endif //BLUE_MAX_GENERATE_H

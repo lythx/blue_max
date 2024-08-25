@@ -1,11 +1,13 @@
 #include "generate.h"
-#include "stdlib.h"
 #include "utils.h"
+#include "config.h"
 
 typedef enum {
     UP = 1,
     DOWN = 2
 } DIRECTION;
+
+double last_tree_generation_x = 0.0;
 
 Vector get_random_position(const Vector* center, DIRECTION direction);
 
@@ -73,6 +75,20 @@ void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_co
       plane_projectiles[*plane_projectile_count] = plane_shoot(app, &planes[i]);
       (*plane_projectile_count)++;
     }
+  }
+}
+
+void generate_trees(const App* app, const Vector* center, Tree* trees, uint8_t* tree_count) {
+  if (center->x - last_tree_generation_x < TREE_DEFAULT_DISTANCE) {
+    return;
+  }
+  last_tree_generation_x = center->x;
+  double x = center->x + SPAWN_DISTANCE_TO_CENTER;
+  double y = center->y - WINDOW_WIDTH;
+  while (y < center->y + WINDOW_WIDTH + TREE_DEFAULT_DISTANCE) {
+    trees[*tree_count] = tree_create(app, x, y);
+    (*tree_count)++;
+    y += TREE_DEFAULT_DISTANCE;
   }
 }
 

@@ -18,6 +18,8 @@ Projectile plane_projectiles[MAX_PROJECTILES];
 uint8_t plane_projectile_count = 0;
 Building buildings[MAX_BUILDINGS];
 uint8_t building_count = 0;
+Tree trees[MAX_TREES];
+uint8_t tree_count = 0;
 
 int main(int argc, char* argv[]) {
   srand(time(NULL));
@@ -46,12 +48,14 @@ int main(int argc, char* argv[]) {
     generate_plane_shots(&app, planes, &plane_count, plane_projectiles, &plane_projectile_count);
     generate_plane(&app, &center, planes, &plane_count);
     generate_building(&app, &center, buildings, &building_count);
+    generate_trees(&app, &center, trees, &tree_count);
 
     if (update_all(&center, &player,
                    buildings, &building_count,
                    planes, &plane_count,
                    player_projectiles, &player_projectile_count,
-                   plane_projectiles, &plane_projectile_count)) {
+                   plane_projectiles, &plane_projectile_count,
+                   trees, &tree_count)) {
       break;
     }
 
@@ -59,7 +63,8 @@ int main(int argc, char* argv[]) {
                buildings, building_count,
                planes, plane_count,
                player_projectiles, player_projectile_count,
-               plane_projectiles, plane_projectile_count);
+               plane_projectiles, plane_projectile_count,
+               trees, tree_count);
 
     SDL_Delay(10);
   }
