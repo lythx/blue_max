@@ -78,15 +78,32 @@ void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_co
   }
 }
 
-void generate_trees(const App* app, const Vector* center, Tree* trees, uint8_t* tree_count) {
+void generate_trees(const App* app, const Vector* center, Tree* trees, uint8_t* tree_count,
+                    const Building* buildings, uint8_t building_count) {
   if (center->x - last_tree_generation_x < TREE_DEFAULT_DISTANCE) {
     return;
   }
   last_tree_generation_x = center->x;
-  double x = center->x + SPAWN_DISTANCE_TO_CENTER;
-  double y = center->y - WINDOW_WIDTH;
-  while (y < center->y + WINDOW_WIDTH + TREE_DEFAULT_DISTANCE) {
-    trees[*tree_count] = tree_create(app, x, y);
+  Vector mid = vector_create(SPAWN_DISTANCE_TO_CENTER, 0, 0);
+  vector_rotate(&mid);
+  vector_sum(&mid, center);
+  double y = mid.y - WINDOW_WIDTH;
+  while (y < mid.y + WINDOW_WIDTH + TREE_DEFAULT_DISTANCE) {
+    double x_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
+    double y_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
+    Tree tree = tree_create(app, mid.x + x_offset, y + y_offset);
+    Box tree_hb = tree_hitbox(&tree);
+    int is_colliding = 0;
+    for (uint8_t i = 0; i < building_count; i++) {
+      Box building_hb = building_hitbox(&buildings[i]);
+      if (box_intersects(&tree_hb, &building_hb)) {
+        is_colliding = 1;
+      }
+    }
+    if (is_colliding) {
+      continue;
+    }
+    trees[*tree_count] = tree;
     (*tree_count)++;
     y += TREE_DEFAULT_DISTANCE;
   }

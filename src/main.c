@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
     generate_plane_shots(&app, planes, &plane_count, plane_projectiles, &plane_projectile_count);
     generate_plane(&app, &center, planes, &plane_count);
     generate_building(&app, &center, buildings, &building_count);
-    generate_trees(&app, &center, trees, &tree_count);
+    generate_trees(&app, &center, trees, &tree_count, buildings, building_count);
 
     if (update_all(&center, &player,
                    buildings, &building_count,

@@ -54,6 +54,7 @@ typedef struct {
 
 #define TREE_WIDTH 2.0
 #define TREE_HEIGHT 5.0
-#define TREE_DEFAULT_DISTANCE 400.0
+#define TREE_DEFAULT_DISTANCE 200.0
+#define TREE_MAX_OFFSET 70.0
 
 #endif //BLUE_MAX_DEFS_H
