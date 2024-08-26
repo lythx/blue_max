@@ -7,11 +7,9 @@ typedef enum {
     DOWN = 2
 } DIRECTION;
 
-double last_tree_generation_x = 0.0;
-
 Vector get_random_position(const Vector* center, DIRECTION direction);
 
-void generate_plane(const App* app, const Vector* center, Plane* planes, uint8_t* plane_count) {
+void generate_plane(const Vector* center, Plane* planes, uint8_t* plane_count) {
   if (*plane_count == MAX_PLANES) {
     return;
   }
@@ -37,11 +35,11 @@ void generate_plane(const App* app, const Vector* center, Plane* planes, uint8_t
       }
     }
   } while(collision);
-  planes[*plane_count] = plane_create(app, &pos, direction);
+  planes[*plane_count] = plane_create(&pos, direction);
   (*plane_count)++;
 }
 
-void generate_building(const App* app, const Vector* center, Building* buildings, uint8_t* building_count) {
+void generate_building(const Vector* center, Building* buildings, uint8_t* building_count) {
   if (*building_count == MAX_BUILDINGS || rand_0_1() > SPAWN_BUILDING_CHANCE) {
     return;
   }
@@ -60,11 +58,11 @@ void generate_building(const App* app, const Vector* center, Building* buildings
       }
     }
   } while(too_close);
-  buildings[*building_count] = building_create(app, pos.x, pos.y, 100.0, 100.0, 100.0);
+  buildings[*building_count] = building_create(pos.x, pos.y, 100.0, 100.0, 100.0);
   (*building_count)++;
 }
 
-void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_count,
+void generate_plane_shots(Plane* planes, const uint8_t* plane_count,
                           Projectile* plane_projectiles, uint8_t* plane_projectile_count) {
   long long t = time_ms();
   for (uint8_t i = 0; i < *plane_count; i++) {
@@ -72,14 +70,15 @@ void generate_plane_shots(const App* app, Plane* planes, const uint8_t* plane_co
       continue;
     }
     if (rand_0_1() <= PLANE_SHOOT_CHANCE) {
-      plane_projectiles[*plane_projectile_count] = plane_shoot(app, &planes[i]);
+      plane_projectiles[*plane_projectile_count] = plane_shoot(&planes[i]);
       (*plane_projectile_count)++;
     }
   }
 }
 
-void generate_trees(const App* app, const Vector* center, Tree* trees, uint8_t* tree_count,
+void generate_trees(const Vector* center, Tree* trees, uint8_t* tree_count,
                     const Building* buildings, uint8_t building_count) {
+  static double last_tree_generation_x = 0.0;
   if (center->x - last_tree_generation_x < TREE_DEFAULT_DISTANCE) {
     return;
   }
@@ -91,7 +90,7 @@ void generate_trees(const App* app, const Vector* center, Tree* trees, uint8_t* 
   while (y < mid.y + WINDOW_WIDTH + TREE_DEFAULT_DISTANCE) {
     double x_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     double y_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
-    Tree tree = tree_create(app, mid.x + x_offset, y + y_offset);
+    Tree tree = tree_create(mid.x + x_offset, y + y_offset);
     Box tree_hb = tree_hitbox(&tree);
     int is_colliding = 0;
     for (uint8_t i = 0; i < building_count; i++) {

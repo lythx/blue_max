@@ -1,6 +1,6 @@
 #include "input.h"
 
-int handle_input(const App* app, SDL_Event* event, Player* player,
+int handle_input(SDL_Event* event, Player* player,
                  Projectile* player_projectiles, uint8_t* player_projectile_count) {
   while (SDL_PollEvent(event)) {
     switch (event->type)
@@ -9,7 +9,7 @@ int handle_input(const App* app, SDL_Event* event, Player* player,
         return 0;
       case SDL_KEYDOWN:
         if (event->key.keysym.scancode == SDL_SCANCODE_SPACE) {
-          player_projectiles[*player_projectile_count] = player_shoot(app, player);
+          player_projectiles[*player_projectile_count] = player_shoot(player);
           (*player_projectile_count)++;
           break;
         }

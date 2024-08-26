@@ -18,7 +18,7 @@ typedef struct {
     PROJECTILE_ORIGIN origin;
 } Projectile;
 
-Projectile projectile_create(const App* app, Vector* pos, PROJECTILE_ORIGIN origin);
+Projectile projectile_create(Vector* pos, PROJECTILE_ORIGIN origin);
 
 void projectile_move(Projectile* projectile);
 

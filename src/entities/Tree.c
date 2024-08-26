@@ -1,8 +1,8 @@
 #include "Tree.h"
-#include "../init_SDL.h"
+#include "../textures.h"
 
-Tree tree_create(const App* app, double x, double y) {
-  SDL_Texture* texture = load_texture(app, "../assets/player.png");
+Tree tree_create(double x, double y) {
+  SDL_Texture* texture = get_texture(TEXTURE_TREE);
   return (Tree) {x, y, texture};
 }
 

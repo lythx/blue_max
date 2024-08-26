@@ -1,8 +1,8 @@
 #include "Player.h"
 #include "../defs.h"
-#include "../init_SDL.h"
+#include "../textures.h"
 
-Player player_create(const App* app, Vector* pos) {
+Player player_create(Vector* pos) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,
                                          PLANE_BODY_WIDTH, PLANE_BODY_HEIGHT);
   Box wings_hb = box_create_around_center(pos, PLANE_WINGS_LENGTH,
@@ -10,9 +10,9 @@ Player player_create(const App* app, Vector* pos) {
   Box* hitboxes = malloc(sizeof(Box) * 2);
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
-  SDL_Texture* texture_fw = load_texture(app, "../assets/player.png");
-  SDL_Texture* texture_left = load_texture(app, "../assets/player.png");
-  SDL_Texture* texture_right = load_texture(app, "../assets/player.png");
+  SDL_Texture* texture_fw = get_texture(TEXTURE_PLANE);
+  SDL_Texture* texture_left = get_texture(TEXTURE_PLANE_LEFT);
+  SDL_Texture* texture_right = get_texture(TEXTURE_PLANE_RIGHT);
   return (Player) {*pos, hitboxes, 0, 0, 0, 0, texture_fw, texture_left, texture_right};
 }
 
@@ -85,8 +85,8 @@ SDL_Texture* player_get_texture(const Player* player) {
   return player->texture_forward;
 }
 
-Projectile player_shoot(const App* app, const Player* player) {
+Projectile player_shoot(const Player* player) {
   Vector pos = vector_copy(&player->pos);
-  return projectile_create(app, &pos, PROJECTILE_PLAYER);
+  return projectile_create(&pos, PROJECTILE_PLAYER);
 }
 

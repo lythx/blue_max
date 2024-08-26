@@ -1,10 +1,10 @@
 #include "Projectile.h"
-#include "../init_SDL.h"
+#include "../textures.h"
 
-Projectile projectile_create(const App* app, Vector* pos, PROJECTILE_ORIGIN origin) {
+Projectile projectile_create(Vector* pos, PROJECTILE_ORIGIN origin) {
   Box hitbox = box_create_around_center(pos, PROJECTILE_LENGTH,
                                          PROJECTILE_DIAMETER, PROJECTILE_DIAMETER);
-  SDL_Texture* texture = load_texture(app, "../assets/player.png");
+  SDL_Texture* texture = get_texture(TEXTURE_PROJECTILE);
   return (Projectile) {*pos, hitbox, texture, origin};
 }
 

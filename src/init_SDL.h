@@ -7,6 +7,4 @@ void init_SDL(App* app);
 
 void quit_SDL(App* app);
 
-SDL_Texture* load_texture(const App* app, const char* filename);
-
 #endif //BLUE_MAX_INIT_SDL_H

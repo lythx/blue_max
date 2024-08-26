@@ -19,11 +19,11 @@ typedef struct {
     SDL_Texture* texture;
 } Plane;
 
-Plane plane_create(const App* app, Vector* pos, PLANE_DIRECTION direction);
+Plane plane_create(Vector* pos, PLANE_DIRECTION direction);
 
 void plane_move(Plane* plane);
 
-Projectile plane_shoot(const App* app, Plane* plane);
+Projectile plane_shoot(Plane* plane);
 
 void plane_destroy(Plane* plane);
 

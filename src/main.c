@@ -9,6 +9,7 @@
 #include "update.h"
 #include "render.h"
 #include "input.h"
+#include "textures.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -29,26 +30,27 @@ int main(int argc, char* argv[]) {
 
   App app;
   init_SDL(&app);
+  init_textures(&app);
   Vector center = vector_create((double) WINDOW_HEIGHT / 2, (double) WINDOW_WIDTH / 2, 0);
   SDL_Event event;
   Vector pos = vector_create(300, 300, 0);
   Vector enemy_pos = vector_create(500, 500, 100);
   Vector enemy_pos2 = vector_create(400, 300, 100);
-  buildings[0] = building_create(&app, 300, 200, 100, 100, 100);
+  buildings[0] = building_create(300, 200, 100, 100, 100);
   building_count = 1;
-  Player player = player_create(&app, &pos);
-  planes[0] = plane_create(&app, &enemy_pos, PLANE_DOWN);
-  planes[1] = plane_create(&app, &enemy_pos2, PLANE_UP);
+  Player player = player_create(&pos);
+  planes[0] = plane_create(&enemy_pos, PLANE_DOWN);
+  planes[1] = plane_create(&enemy_pos2, PLANE_UP);
   plane_count = 2;
   int running = 1;
 
   while (running) {
-    running = handle_input(&app, &event, &player, player_projectiles, &player_projectile_count);
+    running = handle_input(&event, &player, player_projectiles, &player_projectile_count);
 
-    generate_plane_shots(&app, planes, &plane_count, plane_projectiles, &plane_projectile_count);
-    generate_plane(&app, &center, planes, &plane_count);
-    generate_building(&app, &center, buildings, &building_count);
-    generate_trees(&app, &center, trees, &tree_count, buildings, building_count);
+    generate_plane_shots(planes, &plane_count, plane_projectiles, &plane_projectile_count);
+    generate_plane(&center, planes, &plane_count);
+    generate_building(&center, buildings, &building_count);
+    generate_trees(&center, trees, &tree_count, buildings, building_count);
 
     if (update_all(&center, &player,
                    buildings, &building_count,

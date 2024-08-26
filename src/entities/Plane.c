@@ -1,8 +1,8 @@
 #include "../utils.h"
 #include "Plane.h"
-#include "../init_SDL.h"
+#include "../textures.h"
 
-Plane plane_create(const App* app, Vector* pos, PLANE_DIRECTION direction) {
+Plane plane_create(Vector* pos, PLANE_DIRECTION direction) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,
                                          PLANE_BODY_WIDTH, PLANE_BODY_HEIGHT);
   Box wings_hb = box_create_around_center(pos, PLANE_WINGS_LENGTH,
@@ -10,7 +10,7 @@ Plane plane_create(const App* app, Vector* pos, PLANE_DIRECTION direction) {
   Box* hitboxes = malloc(sizeof(Box) * 2);
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
-  SDL_Texture* texture = load_texture(app, "../assets/player.png");
+  SDL_Texture* texture = get_texture(TEXTURE_PLANE);
   return (Plane) {*pos, hitboxes, direction, 0, texture};
 }
 
@@ -24,10 +24,10 @@ void plane_move(Plane* plane) {
   plane->hitboxes[1].y += diff.y;
 }
 
-Projectile plane_shoot(const App* app, Plane* plane) {
+Projectile plane_shoot(Plane* plane) {
   Vector pos = vector_copy(&plane->pos);
   plane->last_shot_timestamp = time_ms();
-  return projectile_create(app, &pos, plane->direction == PLANE_UP ? PROJECTILE_PLANE_UP : PROJECTILE_PLANE_DOWN);
+  return projectile_create(&pos, plane->direction == PLANE_UP ? PROJECTILE_PLANE_UP : PROJECTILE_PLANE_DOWN);
 }
 
 void plane_destroy(Plane* plane) {

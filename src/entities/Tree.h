@@ -10,7 +10,7 @@ typedef struct {
     SDL_Texture* texture;
 } Tree;
 
-Tree tree_create(const App* app, double x, double y);
+Tree tree_create(double x, double y);
 
 Box tree_hitbox(const Tree* tree);
 

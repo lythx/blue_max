@@ -14,7 +14,7 @@ typedef struct {
     SDL_Texture* texture;
 } Building;
 
-Building building_create(const App* app, double x, double y, double length, double width, double height);
+Building building_create(double x, double y, double length, double width, double height);
 
 Box building_hitbox(const Building* building);
 
