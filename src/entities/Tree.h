@@ -4,10 +4,16 @@
 #include "../geometry.h"
 #include "../defs.h"
 
+typedef enum {
+    NONE = 0,
+    GREEN = 1,
+    BLACK = 2
+} TREE_COLOR;
+
 typedef struct {
     double x;
     double y;
-    SDL_Texture* texture;
+    TREE_COLOR color_grid[TREE_GRID_ROWS][TREE_GRID_COLUMNS];
 } Tree;
 
 Tree tree_create(double x, double y);

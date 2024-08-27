@@ -49,12 +49,14 @@ typedef struct {
 #define UNLOAD_DISTANCE_TO_CENTER 1000.0
 
 #define COLOR_GRASS_R 0
-#define COLOR_GRASS_G 80
-#define COLOR_GRASS_B 0
+#define COLOR_GRASS_G 0
+#define COLOR_GRASS_B 200
 
-#define TREE_WIDTH 2.0
-#define TREE_HEIGHT 5.0
+#define TREE_WIDTH 100.0
+#define TREE_HEIGHT 200.0
 #define TREE_DEFAULT_DISTANCE 200.0
 #define TREE_MAX_OFFSET 70.0
+#define TREE_GRID_COLUMNS 8
+#define TREE_GRID_ROWS 12
 
 #endif //BLUE_MAX_DEFS_H

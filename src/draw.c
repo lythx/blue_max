@@ -70,3 +70,30 @@ void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, co
   dest.y -= dest.h / 2;
   SDL_RenderCopy(app->renderer, texture, NULL, &dest);
 }
+
+void draw_tree(const App* app, const Vector* center, const Tree* tree) {
+  Vector pos = vector_create(tree->x, tree->y, 0);
+  translate_vector(&pos, center);
+  int rows = TREE_GRID_ROWS;
+  int cols = TREE_GRID_COLUMNS;
+  double dx = (double) TREE_HEIGHT / rows;
+  double dy = (double) TREE_WIDTH / cols;
+  SDL_Rect rect;
+  rect.w = (int) dx;
+  rect.h = (int) dy;
+  for (uint8_t i = 0; i < TREE_GRID_ROWS - 1; i++) {
+    for (uint8_t j = 0; j < TREE_GRID_COLUMNS; j++) {
+      if (tree->color_grid[i][j] == NONE) {
+        continue;
+      }
+      rect.x = (int) (pos.x + dx * i);
+      rect.y = (int) (pos.y + dy * j);
+      if (tree->color_grid[i][j] == GREEN) {
+        SDL_SetRenderDrawColor(app->renderer, 0, 100, 0, 255);
+      } else if (tree->color_grid [i][j] == BLACK) {
+        SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, 255);
+      }
+      SDL_RenderFillRect(app->renderer, &rect);
+    }
+  }
+}
