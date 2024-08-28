@@ -13,7 +13,7 @@ typedef enum {
 typedef struct {
     double x;
     double y;
-    TREE_COLOR color_grid[TREE_GRID_ROWS][TREE_GRID_COLUMNS];
+    uint8_t color_grid[TREE_GRID_ROWS][TREE_GRID_COLUMNS];
 } Tree;
 
 Tree tree_create(double x, double y);

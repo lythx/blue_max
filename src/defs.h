@@ -53,7 +53,7 @@ typedef struct {
 #define COLOR_GRASS_B 200
 
 #define TREE_WIDTH 100.0
-#define TREE_HEIGHT 200.0
+#define TREE_HEIGHT 120.0
 #define TREE_DEFAULT_DISTANCE 200.0
 #define TREE_MAX_OFFSET 70.0
 #define TREE_GRID_COLUMNS 8

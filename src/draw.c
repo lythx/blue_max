@@ -76,18 +76,18 @@ void draw_tree(const App* app, const Vector* center, const Tree* tree) {
   translate_vector(&pos, center);
   int rows = TREE_GRID_ROWS;
   int cols = TREE_GRID_COLUMNS;
-  double dx = (double) TREE_HEIGHT / rows;
-  double dy = (double) TREE_WIDTH / cols;
+  double dx = (double) TREE_WIDTH / rows;
+  double dy = (double) TREE_HEIGHT / cols;
   SDL_Rect rect;
-  rect.w = (int) dx;
-  rect.h = (int) dy;
-  for (uint8_t i = 0; i < TREE_GRID_ROWS - 1; i++) {
+  rect.w = (int) dx + 1;
+  rect.h = (int) dy + 1;
+  for (uint8_t i = 0; i < TREE_GRID_ROWS; i++) {
     for (uint8_t j = 0; j < TREE_GRID_COLUMNS; j++) {
       if (tree->color_grid[i][j] == NONE) {
         continue;
       }
-      rect.x = (int) (pos.x + dx * i);
-      rect.y = (int) (pos.y + dy * j);
+      rect.x = (int) (pos.x + dx * j);
+      rect.y = (int) (pos.y + dy * i);
       if (tree->color_grid[i][j] == GREEN) {
         SDL_SetRenderDrawColor(app->renderer, 0, 100, 0, 255);
       } else if (tree->color_grid [i][j] == BLACK) {
