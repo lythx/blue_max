@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "../textures.h"
-#include "../utils.h"
 
 Player player_create(Vector* pos) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,
@@ -71,13 +70,8 @@ void player_move(Player* player, Vector* center) {
   player->hitboxes[1].z += diff.z;
 }
 
-SDL_Texture* player_get_texture(Player* player) {
+SDL_Texture* player_get_texture(const Player* player) {
   int val = player->right - player->left;
-  long long t = time_ms();
-  if (t - player->last_texture_change > PLAYER_TEXTURE_CHANGE_INTERVAL_MS) {
-    player->texture_type = player->texture_type == 1 ? 2 : 1;
-    player->last_texture_change = t;
-  }
   if (player->texture_type == 1) {
     if (val == 1) {
       return get_texture(TEXTURE_PLAYER_RIGHT_1);

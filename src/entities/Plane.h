@@ -16,7 +16,8 @@ typedef struct {
     Box* hitboxes;
     int direction;
     long long last_shot_timestamp;
-    SDL_Texture* texture;
+    long long last_texture_change;
+    int texture_type;
 } Plane;
 
 Plane plane_create(Vector* pos, PLANE_DIRECTION direction);
@@ -24,6 +25,8 @@ Plane plane_create(Vector* pos, PLANE_DIRECTION direction);
 void plane_move(Plane* plane);
 
 Projectile plane_shoot(Plane* plane);
+
+SDL_Texture* plane_get_texture(const Plane* plane);
 
 void plane_destroy(Plane* plane);
 

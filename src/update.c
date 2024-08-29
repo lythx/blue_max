@@ -1,4 +1,5 @@
 #include "update.h"
+#include "utils.h"
 
 void move_center_and_entities(Vector* center, Player* player,
                               Plane* planes, uint8_t plane_count,
@@ -118,6 +119,20 @@ void unload_off_camera(const Vector* center,
   }
 }
 
+void update_textures(Player* player, Plane* planes, uint8_t plane_count) {
+  long long t = time_ms();
+  if (t - player->last_texture_change > PLAYER_TEXTURE_CHANGE_INTERVAL_MS) {
+    player->texture_type = player->texture_type == 1 ? 2 : 1;
+    player->last_texture_change = t;
+  }
+  for (uint8_t i = 0; i < plane_count; i++) {
+    if (t - planes[i].last_texture_change > PLANE_TEXTURE_CHANGE_INTERVAL_MS) {
+      planes[i].texture_type = planes[i].texture_type == 1 ? 2 : 1;
+      planes[i].last_texture_change = t;
+    }
+  }
+}
+
 int update_all(Vector* center, Player* player,
                Building* buildings, uint8_t* building_count,
                Plane* planes, uint8_t* plane_count,
@@ -132,6 +147,7 @@ int update_all(Vector* center, Player* player,
                            trees, tree_count)) {
     return 1;
   }
+  update_textures(player, planes, *plane_count);
   unload_off_camera(center, buildings, building_count, planes, plane_count,
                     player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count,
                     trees, tree_count);

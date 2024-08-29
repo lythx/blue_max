@@ -10,8 +10,7 @@ Plane plane_create(Vector* pos, PLANE_DIRECTION direction) {
   Box* hitboxes = malloc(sizeof(Box) * 2);
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
-  SDL_Texture* texture = get_texture(TEXTURE_PLANE);
-  return (Plane) {*pos, hitboxes, direction, 0, texture};
+  return (Plane) {*pos, hitboxes, direction, 0, 0};
 }
 
 void plane_move(Plane* plane) {
@@ -28,6 +27,14 @@ Projectile plane_shoot(Plane* plane) {
   Vector pos = vector_copy(&plane->pos);
   plane->last_shot_timestamp = time_ms();
   return projectile_create(&pos, plane->direction == PLANE_UP ? PROJECTILE_PLANE_UP : PROJECTILE_PLANE_DOWN);
+}
+
+SDL_Texture* plane_get_texture(const Plane* plane) {
+  if (plane->texture_type == 1) {
+    return get_texture(TEXTURE_PLANE_1);
+  } else { // plane->texture_type == 2
+    return get_texture(TEXTURE_PLANE_2);
+  }
 }
 
 void plane_destroy(Plane* plane) {

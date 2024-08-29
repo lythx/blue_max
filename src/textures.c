@@ -19,7 +19,8 @@ void init_textures(const App* app) {
   textures[TEXTURE_PLAYER_2] = load_texture(app, "../assets/player2.png");
   textures[TEXTURE_PLAYER_LEFT_2] = load_texture(app, "../assets/player_left2.png");
   textures[TEXTURE_PLAYER_RIGHT_2] = load_texture(app, "../assets/player_right2.png");
-  textures[TEXTURE_PLANE] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLANE_1] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLANE_2] = load_texture(app, "../assets/player2.png");
   textures[TEXTURE_PLANE_LEFT] = load_texture(app, "../assets/player1.png");
   textures[TEXTURE_PLANE_RIGHT] = load_texture(app, "../assets/player1.png");
   textures[TEXTURE_TREE] = load_texture(app, "../assets/player1.png");

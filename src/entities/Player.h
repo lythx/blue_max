@@ -24,7 +24,7 @@ void player_handle_keyup(Player* player, int keycode);
 
 void player_move(Player* player, Vector* center);
 
-SDL_Texture* player_get_texture(Player* player);
+SDL_Texture* player_get_texture(const Player* player);
 
 Projectile player_shoot(const Player* player);
 
