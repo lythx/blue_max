@@ -1,7 +1,7 @@
 #include "textures.h"
 #include "SDL_image.h"
 
-#define TEXTURE_COUNT 9
+#define TEXTURE_COUNT 20
 
 SDL_Texture* textures[TEXTURE_COUNT];
 
@@ -13,15 +13,18 @@ SDL_Texture* load_texture(const App* app, const char* filename) {
 }
 
 void init_textures(const App* app) {
-  textures[TEXTURE_PLAYER] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_PLAYER_LEFT] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_PLAYER_RIGHT] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_PLANE] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_PLANE_LEFT] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_PLANE_RIGHT] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_TREE] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_PROJECTILE] = load_texture(app, "../assets/player.png");
-  textures[TEXTURE_BUILDING] = load_texture(app, "../assets/player.png");
+  textures[TEXTURE_PLAYER_1] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLAYER_LEFT_1] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLAYER_RIGHT_1] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLAYER_2] = load_texture(app, "../assets/player2.png");
+  textures[TEXTURE_PLAYER_LEFT_2] = load_texture(app, "../assets/player2.png");
+  textures[TEXTURE_PLAYER_RIGHT_2] = load_texture(app, "../assets/player2.png");
+  textures[TEXTURE_PLANE] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLANE_LEFT] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PLANE_RIGHT] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_TREE] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_PROJECTILE] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_BUILDING] = load_texture(app, "../assets/player1.png");
 }
 
 SDL_Texture* get_texture(TEXTURE texture) {

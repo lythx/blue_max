@@ -8,13 +8,12 @@
 typedef struct {
   Vector pos;
   Box* hitboxes;
-  int up;
-  int down;
-  int left;
-  int right;
-  SDL_Texture* texture_forward;
-  SDL_Texture* texture_left;
-  SDL_Texture* texture_right;
+  uint8_t up;
+  uint8_t down;
+  uint8_t left;
+  uint8_t right;
+  uint8_t texture_type;
+  long long last_texture_change;
 } Player;
 
 Player player_create(Vector* pos);
@@ -25,7 +24,7 @@ void player_handle_keyup(Player* player, int keycode);
 
 void player_move(Player* player, Vector* center);
 
-SDL_Texture* player_get_texture(const Player* player);
+SDL_Texture* player_get_texture(Player* player);
 
 Projectile player_shoot(const Player* player);
 

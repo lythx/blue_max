@@ -1,6 +1,6 @@
 #include "Player.h"
-#include "../defs.h"
 #include "../textures.h"
+#include "../utils.h"
 
 Player player_create(Vector* pos) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,
@@ -10,10 +10,7 @@ Player player_create(Vector* pos) {
   Box* hitboxes = malloc(sizeof(Box) * 2);
   hitboxes[0] = body_hb;
   hitboxes[1] = wings_hb;
-  SDL_Texture* texture_fw = get_texture(TEXTURE_PLANE);
-  SDL_Texture* texture_left = get_texture(TEXTURE_PLANE_LEFT);
-  SDL_Texture* texture_right = get_texture(TEXTURE_PLANE_RIGHT);
-  return (Player) {*pos, hitboxes, 0, 0, 0, 0, texture_fw, texture_left, texture_right};
+  return (Player) {*pos, hitboxes, 0, 0, 0, 0, 0};
 }
 
 void handle_key(Player* player, int keycode, int value_to_set) {
@@ -74,15 +71,31 @@ void player_move(Player* player, Vector* center) {
   player->hitboxes[1].z += diff.z;
 }
 
-SDL_Texture* player_get_texture(const Player* player) {
+SDL_Texture* player_get_texture(Player* player) {
   int val = player->right - player->left;
-  if (val == 1) {
-    return player->texture_right;
+  long long t = time_ms();
+  if (t - player->last_texture_change > PLAYER_TEXTURE_CHANGE_INTERVAL_MS) {
+    player->texture_type = player->texture_type == 1 ? 2 : 1;
+    player->last_texture_change = t;
   }
-  if (val == -1) {
-    return player->texture_left;
+  if (player->texture_type == 1) {
+    if (val == 1) {
+      return get_texture(TEXTURE_PLAYER_RIGHT_1);
+    }
+    if (val == -1) {
+      return get_texture(TEXTURE_PLAYER_LEFT_1);
+    }
+    return get_texture(TEXTURE_PLAYER_1);
+  } else { // player->texture_type = 2
+    if (val == 1) {
+      return get_texture(TEXTURE_PLAYER_RIGHT_2);
+    }
+    if (val == -1) {
+      return get_texture(TEXTURE_PLAYER_LEFT_2);
+    }
+    return get_texture(TEXTURE_PLAYER_2);
   }
-  return player->texture_forward;
+
 }
 
 Projectile player_shoot(const Player* player) {
