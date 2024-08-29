@@ -25,7 +25,7 @@ void init_textures(const App* app) {
   textures[TEXTURE_PLANE_RIGHT] = load_texture(app, "../assets/player1.png");
   textures[TEXTURE_TREE] = load_texture(app, "../assets/player1.png");
   textures[TEXTURE_PROJECTILE] = load_texture(app, "../assets/player1.png");
-  textures[TEXTURE_BUILDING] = load_texture(app, "../assets/player1.png");
+  textures[TEXTURE_BUILDING] = load_texture(app, "../assets/building.png");
 }
 
 SDL_Texture* get_texture(TEXTURE texture) {
