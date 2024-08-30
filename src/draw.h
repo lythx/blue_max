@@ -13,7 +13,7 @@ void draw_box(const App* app, const Vector* center, const Box* b);
 
 void draw_hitboxes(const App* app, const Vector* center, const Box* hitboxes, size_t size);
 
-void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, const Vector* pos);
+void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, const Vector* pos, int width, int height);
 
 void draw_tree(const App* app, const Vector* center, const Tree* tree);
 

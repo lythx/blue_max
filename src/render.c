@@ -36,20 +36,20 @@ void render_textures(const App* app, const Vector* center, const Player* player,
                      const Projectile* plane_projectiles, uint8_t plane_projectile_count,
                      const Tree* trees, uint8_t tree_count) {
   SDL_Texture* texture = player_get_texture(player);
-  draw_texture(app, center, texture, &player->pos);
+  draw_texture(app, center, texture, &player->pos, PLAYER_TEXTURE_WIDTH, PLAYER_TEXTURE_HEIGHT);
   for (uint8_t i = 0; i < plane_count; i++) {
     texture = plane_get_texture(&planes[i]);
-    draw_texture(app, center, texture, &planes[i].pos);
+    draw_texture(app, center, texture, &planes[i].pos, PLANE_TEXTURE_WIDTH, PLANE_TEXTURE_HEIGHT);
   }
   for (uint8_t i = 0; i < player_projectile_count; i++) {
-    draw_texture(app, center, player_projectiles[i].texture, &player_projectiles[i].pos);
+    draw_texture(app, center, player_projectiles[i].texture, &player_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT);
   }
   for (uint8_t i = 0; i < plane_projectile_count; i++) {
-    draw_texture(app, center, plane_projectiles[i].texture, &plane_projectiles[i].pos);
+    draw_texture(app, center, plane_projectiles[i].texture, &plane_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT);
   }
   for (uint8_t i = 0; i < building_count; i++) {
     Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);
-    draw_texture(app, center, buildings[i].texture, &building_pos);
+    draw_texture(app, center, buildings[i].texture, &building_pos, BUILDING_TEXTURE_WIDTH, BUILDING_TEXTURE_HEIGHT);
   }
   for (uint8_t i = 0; i < tree_count; i++) {
     draw_tree(app, center, &trees[i]);

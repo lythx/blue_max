@@ -59,15 +59,14 @@ void draw_hitboxes(const App* app, const Vector* center, const Box* hitboxes, si
   }
 }
 
-void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, const Vector* pos) {
+void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, const Vector* pos, int width, int height) {
   Vector pos_copy = vector_copy(pos);
   translate_vector(&pos_copy, center);
   SDL_Rect dest;
-  dest.x = (int) pos_copy.x;
-  dest.y = (int) pos_copy.y;
-  SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
-  dest.x -= dest.w / 2;
-  dest.y -= dest.h / 2;
+  dest.x = (int) pos_copy.x - width / 2;
+  dest.y = (int) pos_copy.y - height / 2;
+  dest.w = width;
+  dest.h = height;
   SDL_RenderCopy(app->renderer, texture, NULL, &dest);
 }
 
