@@ -45,7 +45,9 @@ void generate_building(const Vector* center, Building* buildings, uint8_t* build
   }
   Vector pos;
   int too_close;
+  int tries = 0;
   do {
+    tries++;
     too_close = 0;
     pos = get_random_position(center, UP);
     pos.z = 0;
@@ -57,7 +59,7 @@ void generate_building(const Vector* center, Building* buildings, uint8_t* build
         break;
       }
     }
-  } while(too_close);
+  } while(too_close && tries < 3);
   buildings[*building_count] = building_create(pos.x, pos.y, 100.0, 100.0, 100.0);
   (*building_count)++;
 }
