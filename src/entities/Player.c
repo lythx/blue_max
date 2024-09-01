@@ -70,26 +70,37 @@ void player_move(Player* player, Vector* center) {
   player->hitboxes[1].z += diff.z;
 }
 
-SDL_Texture* player_get_texture(const Player* player) {
+SDL_Texture* player_get_texture(const Player* player, int* width, int* height) {
   int val = player->right - player->left;
   if (player->texture_type == 1) {
     if (val == 1) {
+      *width = PLAYER_TEXTURE_RIGHT_WIDTH;
+      *height = PLAYER_TEXTURE_RIGHT_HEIGHT;
       return get_texture(TEXTURE_PLAYER_RIGHT_1);
     }
     if (val == -1) {
+      *width = PLAYER_TEXTURE_LEFT_WIDTH;
+      *height = PLAYER_TEXTURE_LEFT_HEIGHT;
       return get_texture(TEXTURE_PLAYER_LEFT_1);
     }
+    *width = PLAYER_TEXTURE_FORWARD_WIDTH;
+    *height = PLAYER_TEXTURE_FORWARD_HEIGHT;
     return get_texture(TEXTURE_PLAYER_1);
   } else { // player->texture_type = 2
     if (val == 1) {
+      *width = PLAYER_TEXTURE_RIGHT_WIDTH;
+      *height = PLAYER_TEXTURE_RIGHT_HEIGHT;
       return get_texture(TEXTURE_PLAYER_RIGHT_2);
     }
     if (val == -1) {
+      *width = PLAYER_TEXTURE_LEFT_WIDTH;
+      *height = PLAYER_TEXTURE_LEFT_HEIGHT;
       return get_texture(TEXTURE_PLAYER_LEFT_2);
     }
+    *width = PLAYER_TEXTURE_FORWARD_WIDTH;
+    *height = PLAYER_TEXTURE_FORWARD_HEIGHT;
     return get_texture(TEXTURE_PLAYER_2);
   }
-
 }
 
 Projectile player_shoot(const Player* player) {
