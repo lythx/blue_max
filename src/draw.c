@@ -88,9 +88,9 @@ void draw_tree(const App* app, const Vector* center, const Tree* tree) {
       rect.x = (int) (pos.x + dx * j);
       rect.y = (int) (pos.y + dy * i);
       if (tree->color_grid[i][j] == GREEN) {
-        SDL_SetRenderDrawColor(app->renderer, 0, 100, 0, 255);
+        SDL_SetRenderDrawColor(app->renderer, TREE_COLOR_R, TREE_COLOR_G, TREE_COLOR_B, 255);
       } else if (tree->color_grid [i][j] == BLACK) {
-        SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(app->renderer, TREE_ROOT_COLOR_R, TREE_ROOT_COLOR_G, TREE_ROOT_COLOR_B, 255);
       }
       SDL_RenderFillRect(app->renderer, &rect);
     }

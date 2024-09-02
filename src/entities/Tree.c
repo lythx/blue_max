@@ -22,7 +22,7 @@ uint8_t get_tile_color(int x, int y) {
   if (r > grid_probability[x][y]) {
     return NONE;
   }
-  if (r / grid_probability[x][y] > 0.03) {
+  if (r / grid_probability[x][y] > TREE_BLACK_SQUARE_PROBABILITY) {
     return GREEN;
   }
   return BLACK;
@@ -49,12 +49,12 @@ Tree tree_create(double x, double y) {
   }
   tree.color_grid[TREE_GRID_ROWS - 1][TREE_GRID_COLUMNS / 2 - 1] = BLACK;
   tree.color_grid[TREE_GRID_ROWS - 1][TREE_GRID_COLUMNS / 2] = BLACK;
-  if (rand_0_1() > 0.2) {
+  if (rand_0_1() > TREE_BLACK_SQUARE_PROBABILITY * 3) {
     tree.color_grid[TREE_GRID_ROWS - 2][TREE_GRID_COLUMNS / 2 - 1] = BLACK;
   } else{
     tree.color_grid[TREE_GRID_ROWS - 2][TREE_GRID_COLUMNS / 2 - 1] = GREEN;
   }
-  if (rand_0_1() > 0.2) {
+  if (rand_0_1() > TREE_BLACK_SQUARE_PROBABILITY * 3) {
     tree.color_grid[TREE_GRID_ROWS - 2][TREE_GRID_COLUMNS / 2] = BLACK;
   } else{
     tree.color_grid[TREE_GRID_ROWS - 2][TREE_GRID_COLUMNS / 2] = GREEN;
