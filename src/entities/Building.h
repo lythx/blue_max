@@ -18,4 +18,6 @@ Building building_create(double x, double y, double length, double width, double
 
 Box building_hitbox(const Building* building);
 
+SDL_Texture* building_get_texture(const Building* building, int* width, int* height);
+
 #endif //BLUE_MAX_BUILDING_H

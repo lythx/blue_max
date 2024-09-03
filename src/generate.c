@@ -60,7 +60,7 @@ void generate_building(const Vector* center, Building* buildings, uint8_t* build
       }
     }
   } while(too_close && tries < 3);
-  buildings[*building_count] = building_create(pos.x, pos.y, 100.0, 100.0, 100.0);
+  buildings[*building_count] = building_create(pos.x, pos.y, BUILDING_LENGTH, BUILDING_WIDTH, BUILDING_HEIGHT);
   (*building_count)++;
 }
 

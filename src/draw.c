@@ -73,10 +73,12 @@ void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, co
 void draw_tree(const App* app, const Vector* center, const Tree* tree) {
   Vector pos = vector_create(tree->x, tree->y, 0);
   translate_vector(&pos, center);
+  pos.x -= (double) TREE_TEXTURE_WIDTH / 3;
+  pos.y -= (double) TREE_TEXTURE_HEIGHT * (3.0 / 2);
   int rows = TREE_GRID_ROWS;
   int cols = TREE_GRID_COLUMNS;
-  double dx = (double) TREE_WIDTH / rows;
-  double dy = (double) TREE_HEIGHT / cols;
+  double dx = (double) TREE_TEXTURE_WIDTH / rows;
+  double dy = (double) TREE_TEXTURE_HEIGHT / cols;
   SDL_Rect rect;
   rect.w = (int) dx + 1;
   rect.h = (int) dy + 1;

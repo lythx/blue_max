@@ -50,7 +50,8 @@ void render_textures(const App* app, const Vector* center, const Player* player,
   }
   for (uint8_t i = 0; i < building_count; i++) {
     Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);
-    draw_texture(app, center, buildings[i].texture, &building_pos, BUILDING_TEXTURE_WIDTH, BUILDING_TEXTURE_HEIGHT);
+    texture = building_get_texture(&buildings[i], &w, &h);
+    draw_texture(app, center, texture, &building_pos, w, h);
   }
   for (uint8_t i = 0; i < tree_count; i++) {
     draw_tree(app, center, &trees[i]);

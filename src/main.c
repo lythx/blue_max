@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
   Vector pos = vector_create(300, 300, 0);
   Vector enemy_pos = vector_create(500, 500, 100);
   Vector enemy_pos2 = vector_create(400, 300, 100);
-  buildings[0] = building_create(300, 200, 100, 100, 100);
+  buildings[0] = building_create(500, 500, BUILDING_LENGTH, BUILDING_WIDTH, BUILDING_HEIGHT);
   building_count = 1;
   Player player = player_create(&pos);
   planes[0] = plane_create(&enemy_pos, PLANE_DOWN);
