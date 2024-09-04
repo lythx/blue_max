@@ -31,17 +31,10 @@ int main(int argc, char* argv[]) {
   App app;
   init_SDL(&app);
   init_textures(&app);
-  Vector center = vector_create((double) WINDOW_HEIGHT / 2, (double) WINDOW_WIDTH / 2, 0);
   SDL_Event event;
-  Vector pos = vector_create(300, 300, 0);
-  Vector enemy_pos = vector_create(500, 500, 100);
-  Vector enemy_pos2 = vector_create(400, 300, 100);
-  buildings[0] = building_create(500, 500, BUILDING_LENGTH, BUILDING_WIDTH, BUILDING_HEIGHT);
-  building_count = 1;
-  Player player = player_create(&pos);
-  planes[0] = plane_create(&enemy_pos, PLANE_DOWN);
-  planes[1] = plane_create(&enemy_pos2, PLANE_UP);
-  plane_count = 2;
+  Vector center = vector_create((double) WINDOW_HEIGHT / 2, (double) WINDOW_WIDTH / 2, 0);
+  Vector player_init_pos = vector_create(100, 300, 200);
+  Player player = player_create(&player_init_pos);
   int running = 1;
 
   while (running) {
