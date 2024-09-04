@@ -49,7 +49,7 @@ void render_textures(const App* app, const Vector* center, const Player* player,
     draw_texture(app, center, plane_projectiles[i].texture, &plane_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT);
   }
   for (uint8_t i = 0; i < building_count; i++) {
-    Vector building_pos = vector_create(buildings[i].x, buildings[i].y, 0);
+    Vector building_pos = vector_create(buildings[i].x, buildings[i].y, (double) BUILDING_HEIGHT / 2);
     texture = building_get_texture(&buildings[i], &w, &h);
     draw_texture(app, center, texture, &building_pos, w, h);
   }
@@ -66,11 +66,11 @@ void render_all(const App* app, const Vector* center, const Player* player,
                 const Tree* trees, uint8_t tree_count) {
   SDL_SetRenderDrawColor(app->renderer, COLOR_GRASS_R,  COLOR_GRASS_G, COLOR_GRASS_B, 255);
   SDL_RenderClear(app->renderer);
+  render_textures(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
+                  player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   if (DEBUG_MODE == 1) {
     render_hitboxes(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
                     player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   }
-  render_textures(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
-                  player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   SDL_RenderPresent(app->renderer);
 }
