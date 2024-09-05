@@ -24,6 +24,9 @@ int handle_collisions(Player* player,
                       Projectile* player_projectiles, uint8_t* player_projectile_count,
                       Projectile* plane_projectiles, uint8_t* plane_projectile_count,
                       Tree* trees, uint8_t* tree_count) {
+  if (player->pos.z - (double) PLANE_BODY_HEIGHT / 2 < 0) {
+    return 1;
+  }
   for (uint8_t i = 0; i < *plane_count; i++) {
     if (box_intersects_array(player->hitboxes, 2, planes[i].hitboxes, 2)) {
       plane_destroy(&planes[i]);

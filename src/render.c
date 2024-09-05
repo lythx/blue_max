@@ -1,6 +1,14 @@
 #include "render.h"
 #include "config.h"
 
+Vector get_camera_pos(const Vector* center) {
+  Vector camera_pos = vector_copy(center);
+  camera_pos.x += CAMERA_CENTER_OFFSET_X;
+  camera_pos.y += CAMERA_CENTER_OFFSET_Y;
+  camera_pos.z += CAMERA_CENTER_OFFSET_Z;
+  return camera_pos;
+}
+
 void render_hitboxes(const App* app, const Vector* center, const Player* player,
                      const Building* buildings, uint8_t building_count,
                      const Plane* planes, uint8_t plane_count,
