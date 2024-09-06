@@ -1,6 +1,24 @@
 #include "render.h"
 #include "config.h"
 
+typedef enum {
+    TEXTURE = 1,
+    TREE = 2
+} DRAW_TYPE;
+
+typedef struct {
+    DRAW_TYPE type;
+    double dist_to_camera;
+    SDL_Texture* texture;
+    const Vector* pos;
+    int width;
+    int height;
+    const Tree* tree;
+} Entity;
+
+Entity all_entities[MAX_TREES + MAX_BUILDINGS + MAX_PLANES + MAX_PROJECTILES + 1];
+int entity_count = 0;
+
 Vector get_camera_pos(const Vector* center) {
   Vector camera_pos = vector_copy(center);
   camera_pos.x += CAMERA_CENTER_OFFSET_X;
@@ -37,34 +55,73 @@ void render_hitboxes(const App* app, const Vector* center, const Player* player,
   draw_point(app, center, center);
 }
 
+int compare_entities(const void* a, const void* b) {
+  Entity* e1 = (Entity*) a;
+  Entity* e2 = (Entity*) b;
+  return e1->dist_to_camera < e2->dist_to_camera ? 1 : -1;
+}
+
+void sort_entities() {
+  qsort(all_entities, entity_count, sizeof(Entity), compare_entities);
+}
+
+void draw_entities(const App* app, const Vector* center) {
+  for (int i = 0; i < entity_count; i++) {
+    switch (all_entities[i].type) {
+      case TEXTURE:
+        draw_texture(app, center, all_entities[i].texture, all_entities[i].pos,
+                     all_entities[i].width, all_entities[i].height);
+        break;
+      case TREE:
+        draw_tree(app, center, all_entities[i].tree);
+        break;
+    }
+  }
+}
+
 void render_textures(const App* app, const Vector* center, const Player* player,
                      const Building* buildings, uint8_t building_count,
                      const Plane* planes, uint8_t plane_count,
                      const Projectile* player_projectiles, uint8_t player_projectile_count,
                      const Projectile* plane_projectiles, uint8_t plane_projectile_count,
                      const Tree* trees, uint8_t tree_count) {
+  Vector camera_pos = get_camera_pos(center);
   int w, h;
-  SDL_Texture* texture;
+  SDL_Texture* texture = player_get_texture(player, &w, &h);
+  double dist = vector_point_distance(&camera_pos, &player->pos);
+  Vector entity_pos;
+  entity_count = 0;
+  all_entities[entity_count++] = (Entity) {TEXTURE, dist, texture, &player->pos,
+                                    PLANE_TEXTURE_WIDTH, PLANE_TEXTURE_HEIGHT};
   for (uint8_t i = 0; i < building_count; i++) {
-    Vector building_pos = vector_create(buildings[i].x, buildings[i].y, (double) BUILDING_HEIGHT / 2);
+    entity_pos = vector_create(buildings[i].x, buildings[i].y, (double) BUILDING_HEIGHT / 2);
     texture = building_get_texture(&buildings[i], &w, &h);
-    draw_texture(app, center, texture, &building_pos, w, h);
+    dist = vector_point_distance(&camera_pos, &entity_pos);
+    all_entities[entity_count++] = (Entity) {TEXTURE, dist, texture, &entity_pos, w, h};
   }
   for (uint8_t i = 0; i < tree_count; i++) {
-    draw_tree(app, center, &trees[i]);
+    entity_pos = vector_create(trees[i].x, trees[i].y, (double) TREE_HEIGHT / 2);
+    dist = vector_point_distance(&camera_pos, &entity_pos);
+    all_entities[entity_count++] = (Entity) {TREE, dist, texture, 0, 0, 0, &trees[i]};
   }
   for (uint8_t i = 0; i < player_projectile_count; i++) {
-    draw_texture(app, center, player_projectiles[i].texture, &player_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT);
+    dist = vector_point_distance(&camera_pos, &player_projectiles[i].pos);
+    all_entities[entity_count++] = (Entity) {TEXTURE, dist, player_projectiles[i].texture,
+                                      &player_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT};
   }
   for (uint8_t i = 0; i < plane_projectile_count; i++) {
-    draw_texture(app, center, plane_projectiles[i].texture, &plane_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT);
+    dist = vector_point_distance(&camera_pos, &player_projectiles[i].pos);
+    all_entities[entity_count++] = (Entity) {TEXTURE, dist, plane_projectiles[i].texture,
+                                      &plane_projectiles[i].pos, PROJECTILE_TEXTURE_WIDTH, PROJECTILE_TEXTURE_HEIGHT};
   }
   for (uint8_t i = 0; i < plane_count; i++) {
+    dist = vector_point_distance(&camera_pos, &planes[i].pos);
     texture = plane_get_texture(&planes[i]);
-    draw_texture(app, center, texture, &planes[i].pos, PLANE_TEXTURE_WIDTH, PLANE_TEXTURE_HEIGHT);
+    all_entities[entity_count++] = (Entity) {TEXTURE, dist, texture, &planes[i].pos,
+                                      PLANE_TEXTURE_WIDTH, PLANE_TEXTURE_HEIGHT};
   }
-  texture = player_get_texture(player, &w, &h);
-  draw_texture(app, center, texture, &player->pos, w, h);
+  sort_entities();
+  draw_entities(app, center);
 }
 
 void render_all(const App* app, const Vector* center, const Player* player,
