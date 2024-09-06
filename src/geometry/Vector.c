@@ -75,6 +75,12 @@ void vector_rotate_about_origin(Vector* to_rotate, const Vector* origin) {
   to_rotate->y = dx * SIN + dy * COS + origin->y;
 }
 
+double vector_point_distance(const Vector* v1, const Vector* v2) {
+  Vector temp = vector_copy(v1);
+  vector_subtract(&temp, v2);
+  return vector_norm(&temp);
+}
+
 void vector_print(const Vector* v) {
   SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION,
                "[%f, %f, %f]", v->x, v->y, v->z);

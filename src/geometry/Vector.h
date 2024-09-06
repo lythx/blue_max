@@ -31,6 +31,8 @@ void vector_rotate(Vector* v);
 
 void vector_rotate_about_origin(Vector* to_rotate, const Vector* origin);
 
+double vector_point_distance(const Vector* v1, const Vector* v2);
+
 void vector_print(const Vector* v);
 
 #endif //BLUE_MAX_VECTOR_H
