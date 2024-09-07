@@ -27,7 +27,6 @@ int main(int argc, char* argv[]) {
   if (DEBUG_MODE == 1){
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
   }
-
   App app;
   init_SDL(&app);
   init_textures(&app);
