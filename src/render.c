@@ -134,7 +134,7 @@ void render_padding(const App* app) {
                                                  app->window_width, app->bottom_padding});
 }
 
-void render_all(const App* app, const Vector* center, const Player* player,
+void render_all(const App* app, const Player* player,
                 const Building* buildings, uint8_t building_count,
                 const Plane* planes, uint8_t plane_count,
                 const Projectile* player_projectiles, uint8_t player_projectile_count,
@@ -142,10 +142,10 @@ void render_all(const App* app, const Vector* center, const Player* player,
                 const Tree* trees, uint8_t tree_count) {
   SDL_SetRenderDrawColor(app->renderer, COLOR_GRASS_R, COLOR_GRASS_G, COLOR_GRASS_B, 255);
   SDL_RenderClear(app->renderer);
-  render_textures(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
+  render_textures(app, &app->center, player, buildings, building_count, planes, plane_count, player_projectiles,
                   player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   if (DEBUG_MODE == 1) {
-    render_hitboxes(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
+    render_hitboxes(app, &app->center, player, buildings, building_count, planes, plane_count, player_projectiles,
                     player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   }
   render_padding(app);

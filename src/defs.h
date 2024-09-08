@@ -2,6 +2,7 @@
 #define BLUE_MAX_DEFS_H
 
 #include "SDL.h"
+#include "geometry/Vector.h"
 
 typedef struct {
     SDL_Renderer *renderer;
@@ -14,6 +15,7 @@ typedef struct {
     int right_padding;
     int top_padding;
     int bottom_padding;
+    Vector center;
 } App;
 
 #define ROTATION_SIN 0.68199836

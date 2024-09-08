@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
   init_scene(&app);
   init_textures(&app);
   SDL_Event event;
-  Vector center = vector_create((double) WINDOW_HEIGHT / 2, (double) WINDOW_WIDTH / 2, 0);
   Vector player_init_pos = vector_create(100, 300, 200);
   Player player = player_create(&player_init_pos);
   int running = 1;
@@ -42,11 +41,11 @@ int main(int argc, char* argv[]) {
     running = handle_input(&event, &player, player_projectiles, &player_projectile_count);
 
     generate_plane_shots(planes, &plane_count, plane_projectiles, &plane_projectile_count);
-    generate_plane(&center, planes, &plane_count);
-    generate_building(&center, buildings, &building_count);
-    generate_trees(&center, trees, &tree_count, buildings, building_count);
+    generate_plane(&app, planes, &plane_count);
+    generate_building(&app, buildings, &building_count);
+    generate_trees(&app, trees, &tree_count, buildings, building_count);
 
-    if (update_all(&center, &player,
+    if (update_all(&app, &player,
                    buildings, &building_count,
                    planes, &plane_count,
                    player_projectiles, &player_projectile_count,
@@ -55,7 +54,7 @@ int main(int argc, char* argv[]) {
       break;
     }
 
-    render_all(&app, &center, &player,
+    render_all(&app, &player,
                buildings, building_count,
                planes, plane_count,
                player_projectiles, player_projectile_count,

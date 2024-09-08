@@ -9,7 +9,7 @@ typedef enum {
 
 Vector get_random_position(const Vector* center, DIRECTION direction);
 
-void generate_plane(const Vector* center, Plane* planes, uint8_t* plane_count) {
+void generate_plane(const App* app, Plane* planes, uint8_t* plane_count) {
   if (*plane_count == MAX_PLANES) {
     return;
   }
@@ -26,7 +26,7 @@ void generate_plane(const Vector* center, Plane* planes, uint8_t* plane_count) {
   int collision;
   do {
     collision = 0;
-    pos = get_random_position(center, direction == PLANE_DOWN ? UP : DOWN);
+    pos = get_random_position(&app->center, direction == PLANE_DOWN ? UP : DOWN);
     Box path = box_create_around_center(&pos, SPAWN_DISTANCE_TO_CENTER * 5, PLANE_WINGS_WIDTH, PLANE_BODY_HEIGHT);
     for (uint8_t i = 0; i < *plane_count; i++) {
       if (box_intersects_array(planes[i].hitboxes, 2, &path, 1)) {
@@ -39,7 +39,7 @@ void generate_plane(const Vector* center, Plane* planes, uint8_t* plane_count) {
   (*plane_count)++;
 }
 
-void generate_building(const Vector* center, Building* buildings, uint8_t* building_count) {
+void generate_building(const App* app, Building* buildings, uint8_t* building_count) {
   if (*building_count == MAX_BUILDINGS || rand_0_1() > SPAWN_BUILDING_CHANCE) {
     return;
   }
@@ -49,7 +49,7 @@ void generate_building(const Vector* center, Building* buildings, uint8_t* build
   do {
     tries++;
     too_close = 0;
-    pos = get_random_position(center, UP);
+    pos = get_random_position(&app->center, UP);
     pos.z = 0;
     for (uint8_t i = 0; i < *building_count; i++) {
       Vector diff = vector_create(buildings[i].x, buildings[i].y, 0);
@@ -78,16 +78,16 @@ void generate_plane_shots(Plane* planes, const uint8_t* plane_count,
   }
 }
 
-void generate_trees(const Vector* center, Tree* trees, uint8_t* tree_count,
+void generate_trees(const App* app, Tree* trees, uint8_t* tree_count,
                     const Building* buildings, uint8_t building_count) {
   static double last_tree_generation_x = 0.0;
-  if (center->x - last_tree_generation_x < TREE_DEFAULT_DISTANCE) {
+  if (app->center.x - last_tree_generation_x < TREE_DEFAULT_DISTANCE) {
     return;
   }
-  last_tree_generation_x = center->x;
+  last_tree_generation_x = app->center.x;
   Vector mid = vector_create(SPAWN_DISTANCE_TO_CENTER, 0, 0);
   vector_rotate(&mid);
-  vector_sum(&mid, center);
+  vector_sum(&mid, &app->center);
   double y = mid.y - WINDOW_WIDTH;
   while (y < mid.y + WINDOW_WIDTH + TREE_DEFAULT_DISTANCE) {
     double x_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);

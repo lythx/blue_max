@@ -16,4 +16,6 @@ void init_scene(App* app) {
   app->right_padding = (int) ((double) (app->window_width - app->scene_width) / 2);
   app->top_padding = (int) ((double) (app->window_height - app->scene_height) / 2);
   app->bottom_padding = (int) ((double) (app->window_height - app->scene_height) / 2);
+  app->center = vector_create(app->right_padding + (double) app->scene_width / 2,
+                              app->top_padding + (double) app->scene_height / 2, 0);
 }

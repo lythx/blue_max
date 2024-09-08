@@ -136,14 +136,14 @@ void update_textures(Player* player, Plane* planes, uint8_t plane_count) {
   }
 }
 
-int update_all(Vector* center, Player* player,
+int update_all(App* app, Player* player,
                Building* buildings, uint8_t* building_count,
                Plane* planes, uint8_t* plane_count,
                Projectile* player_projectiles, uint8_t* player_projectile_count,
                Projectile* plane_projectiles, uint8_t* plane_projectile_count,
                Tree* trees, uint8_t* tree_count) {
 
-  move_center_and_entities(center, player, planes, *plane_count, player_projectiles, *player_projectile_count,
+  move_center_and_entities(&app->center, player, planes, *plane_count, player_projectiles, *player_projectile_count,
                            plane_projectiles, *plane_projectile_count);
   if (handle_collisions(player, buildings, building_count, planes, plane_count,
                            player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count,
@@ -151,7 +151,7 @@ int update_all(Vector* center, Player* player,
     return 1;
   }
   update_textures(player, planes, *plane_count);
-  unload_off_camera(center, buildings, building_count, planes, plane_count,
+  unload_off_camera(&app->center, buildings, building_count, planes, plane_count,
                     player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count,
                     trees, tree_count);
   return 0;

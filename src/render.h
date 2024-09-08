@@ -5,7 +5,7 @@
 #include "defs.h"
 #include "entities.h"
 
-void render_all(const App* app, const Vector* center, const Player* player,
+void render_all(const App* app, const Player* player,
                 const Building* buildings, uint8_t building_count,
                 const Plane* planes, uint8_t plane_count,
                 const Projectile* player_projectiles, uint8_t player_projectile_count,
