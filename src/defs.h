@@ -6,6 +6,14 @@
 typedef struct {
     SDL_Renderer *renderer;
     SDL_Window *window;
+    int scene_width;
+    int scene_height;
+    int window_width;
+    int window_height;
+    int left_padding;
+    int right_padding;
+    int top_padding;
+    int bottom_padding;
 } App;
 
 #define ROTATION_SIN 0.68199836
@@ -89,5 +97,7 @@ typedef struct {
 #define CAMERA_CENTER_OFFSET_X (-500)
 #define CAMERA_CENTER_OFFSET_Y 0
 #define CAMERA_CENTER_OFFSET_Z 800
+
+#define SCENE_WIDTH_TO_HEIGHT_RATIO 1.98
 
 #endif //BLUE_MAX_DEFS_H

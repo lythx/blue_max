@@ -40,6 +40,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/entities/Tree.h
         src/textures.c
         src/textures.h
+        src/scene.c
+        src/scene.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
