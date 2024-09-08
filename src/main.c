@@ -10,6 +10,7 @@
 #include "render.h"
 #include "input.h"
 #include "textures.h"
+#include "scene.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -29,6 +30,7 @@ int main(int argc, char* argv[]) {
   }
   App app;
   init_SDL(&app);
+  init_scene(&app);
   init_textures(&app);
   SDL_Event event;
   Vector center = vector_create((double) WINDOW_HEIGHT / 2, (double) WINDOW_WIDTH / 2, 0);

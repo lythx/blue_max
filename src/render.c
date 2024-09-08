@@ -124,13 +124,23 @@ void render_textures(const App* app, const Vector* center, const Player* player,
   draw_entities(app, center);
 }
 
+void render_padding(const App* app) {
+  SDL_SetRenderDrawColor(app->renderer, 0,  0, 0, 255);
+  SDL_RenderFillRect(app->renderer, &(SDL_Rect) {0, 0, app->left_padding, app->window_height});
+  SDL_RenderFillRect(app->renderer, &(SDL_Rect) {0, 0, app->window_width, app->top_padding});
+  SDL_RenderFillRect(app->renderer, &(SDL_Rect) {app->window_width - app->right_padding, 0,
+                                                 app->right_padding, app->window_height});
+  SDL_RenderFillRect(app->renderer, &(SDL_Rect) {0, app->window_height - app->bottom_padding,
+                                                 app->window_width, app->bottom_padding});
+}
+
 void render_all(const App* app, const Vector* center, const Player* player,
                 const Building* buildings, uint8_t building_count,
                 const Plane* planes, uint8_t plane_count,
                 const Projectile* player_projectiles, uint8_t player_projectile_count,
                 const Projectile* plane_projectiles, uint8_t plane_projectile_count,
                 const Tree* trees, uint8_t tree_count) {
-  SDL_SetRenderDrawColor(app->renderer, COLOR_GRASS_R,  COLOR_GRASS_G, COLOR_GRASS_B, 255);
+  SDL_SetRenderDrawColor(app->renderer, COLOR_GRASS_R, COLOR_GRASS_G, COLOR_GRASS_B, 255);
   SDL_RenderClear(app->renderer);
   render_textures(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
                   player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
@@ -138,5 +148,6 @@ void render_all(const App* app, const Vector* center, const Player* player,
     render_hitboxes(app, center, player, buildings, building_count, planes, plane_count, player_projectiles,
                     player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   }
+  render_padding(app);
   SDL_RenderPresent(app->renderer);
 }

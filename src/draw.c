@@ -1,24 +1,23 @@
 #include "draw.h"
-#include "config.h"
 #include "SDL_image.h"
 
-void translate_vector(Vector* v, const Vector* center) {
+void translate_vector(Vector* v, const App* app, const Vector* center) {
   double vx = v->x;
-  v->x = v->y - center->y + (double) WINDOW_WIDTH / 2;
-  v->y = WINDOW_HEIGHT * 0.5 - vx + v->z * HEIGHT_Y_OFFSET + center->x;
+  v->x = app->left_padding + v->y - center->y + (double) app->scene_width / 2;
+  v->y = app->top_padding + app->scene_height * 0.5 - vx + v->z * HEIGHT_Y_OFFSET + center->x;
 }
 
 void draw_point(const App* app, const Vector* center, const Vector* p) {
   Vector t = vector_copy(p);
-  translate_vector(&t, center);
+  translate_vector(&t, app, center);
   SDL_RenderDrawPoint(app->renderer, (int) t.x, (int) t.y);
 }
 
 void draw_line(const App* app, const Vector* center, const Vector* a, const Vector* b) {
   Vector at = vector_copy(a);
-  translate_vector(&at, center);
+  translate_vector(&at, app, center);
   Vector bt = vector_copy(b);
-  translate_vector(&bt, center);
+  translate_vector(&bt, app, center);
   SDL_RenderDrawLine(app->renderer, (int) at.x, (int) at.y, (int) bt.x, (int) bt.y);
 }
 
@@ -61,7 +60,7 @@ void draw_hitboxes(const App* app, const Vector* center, const Box* hitboxes, si
 
 void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, const Vector* pos, int width, int height) {
   Vector pos_copy = vector_copy(pos);
-  translate_vector(&pos_copy, center);
+  translate_vector(&pos_copy, app, center);
   SDL_Rect dest;
   dest.x = (int) pos_copy.x - width / 2;
   dest.y = (int) pos_copy.y - height / 2;
@@ -72,7 +71,7 @@ void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, co
 
 void draw_tree(const App* app, const Vector* center, const Tree* tree) {
   Vector pos = vector_create(tree->x, tree->y, 0);
-  translate_vector(&pos, center);
+  translate_vector(&pos, app, center);
   pos.x -= (double) TREE_TEXTURE_WIDTH / 3;
   pos.y -= (double) TREE_TEXTURE_HEIGHT * (3.0 / 2);
   int rows = TREE_GRID_ROWS;
