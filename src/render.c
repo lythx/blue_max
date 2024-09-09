@@ -1,5 +1,6 @@
 #include "render.h"
 #include "config.h"
+#include "ui.h"
 
 typedef enum {
     TEXTURE = 1,
@@ -149,5 +150,6 @@ void render_all(const App* app, const Player* player,
                     player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   }
   render_padding(app);
+  ui_render(app);
   SDL_RenderPresent(app->renderer);
 }

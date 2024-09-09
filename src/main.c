@@ -11,6 +11,7 @@
 #include "input.h"
 #include "textures.h"
 #include "scene.h"
+#include "font.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -32,6 +33,7 @@ int main(int argc, char* argv[]) {
   init_SDL(&app);
   init_scene(&app);
   init_textures(&app);
+  init_font();
   SDL_Event event;
   Vector player_init_pos = vector_create(100, 300, 200);
   Player player = player_create(&player_init_pos);
@@ -60,6 +62,7 @@ int main(int argc, char* argv[]) {
                player_projectiles, player_projectile_count,
                plane_projectiles, plane_projectile_count,
                trees, tree_count);
+
 
     SDL_Delay(10);
   }

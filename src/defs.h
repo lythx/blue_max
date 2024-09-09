@@ -102,4 +102,6 @@ typedef struct {
 
 #define SCENE_WIDTH_TO_HEIGHT_RATIO 1.98
 
+#define UI_FONT_SIZE 20
+
 #endif //BLUE_MAX_DEFS_H
