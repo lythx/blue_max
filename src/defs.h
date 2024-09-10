@@ -18,6 +18,12 @@ typedef struct {
     Vector center;
 } App;
 
+typedef struct {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+} Color;
+
 #define ROTATION_SIN 0.68199836
 #define ROTATION_COS 0.7313537
 #define HEIGHT_Y_OFFSET (-0.7)
@@ -102,6 +108,8 @@ typedef struct {
 
 #define SCENE_WIDTH_TO_HEIGHT_RATIO 1.98
 
-#define UI_FONT_SIZE 20
+#define UI_FONT_SIZE 30
+#define UI_TOP_PADDING 15
+#define UI_LEFT_PADDING 100
 
 #endif //BLUE_MAX_DEFS_H

@@ -1,5 +1,6 @@
 #include "draw.h"
-#include "SDL_image.h"
+#include "SDL_ttf.h"
+#include "font.h"
 
 void translate_vector(Vector* v, const App* app, const Vector* center) {
   double vx = v->x;
@@ -95,5 +96,25 @@ void draw_tree(const App* app, const Vector* center, const Tree* tree) {
       }
       SDL_RenderFillRect(app->renderer, &rect);
     }
+  }
+}
+
+SDL_Rect draw_text(const App* app, int x, int y, const char* text, const Color* color) {
+  TTF_Font* font = get_font();
+  SDL_Surface* surface = TTF_RenderUTF8_Solid(font, text, (SDL_Color){color->r, color->g, color->b, 255});
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(app->renderer, surface);
+  int w, h;
+  SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+  SDL_Rect dest = {x, y, w, h};
+  SDL_RenderCopy(app->renderer, texture, NULL, &dest);
+  return dest;
+}
+
+void draw_text_line(const App* app, int x, int y, int count, char** texts, Color** colors) {
+  SDL_Rect rect;
+  for (int i = 0; i < count; i++) {
+    SDL_Log("%d", x);
+    rect = draw_text(app, x, y, texts[i], colors[i]);
+    x += rect.x;
   }
 }

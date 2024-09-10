@@ -17,4 +17,8 @@ void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, co
 
 void draw_tree(const App* app, const Vector* center, const Tree* tree);
 
+SDL_Rect draw_text(const App* app, int x, int y, const char* text, const Color* color);
+
+void draw_text_line(const App* app, int x, int y, int count, char** texts, Color** colors);
+
 #endif //BLUE_MAX_DRAW_H
