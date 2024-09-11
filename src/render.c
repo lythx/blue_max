@@ -150,6 +150,6 @@ void render_all(const App* app, const Player* player,
                     player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   }
   render_padding(app);
-  ui_render(app);
+  ui_render(app, player);
   SDL_RenderPresent(app->renderer);
 }
