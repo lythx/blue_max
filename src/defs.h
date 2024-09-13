@@ -115,6 +115,12 @@ typedef struct {
 #define UI_FONT_SIZE 30
 #define UI_TOP_PADDING 15
 #define UI_LEFT_PADDING 100
-#define UI_TEXT_LINE_HEIGHT 27
+#define UI_TEXT_LINE_HEIGHT 28
+#define UI_COLOR_1_R 52
+#define UI_COLOR_1_G 162
+#define UI_COLOR_1_B 182
+#define UI_COLOR_2_R 159
+#define UI_COLOR_2_G 255
+#define UI_COLOR_2_B 255
 
 #endif //BLUE_MAX_DEFS_H
