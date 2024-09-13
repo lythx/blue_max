@@ -16,6 +16,7 @@ typedef struct {
     int top_padding;
     int bottom_padding;
     Vector center;
+    int display_hitboxes;
 } App;
 
 typedef struct {

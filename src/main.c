@@ -26,21 +26,26 @@ uint8_t tree_count = 0;
 
 int main(int argc, char* argv[]) {
   srand(time(NULL));
-  if (DEBUG_MODE == 1){
+
+  if (DEBUG_LOG == 1){
     SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
   }
+
   App app;
+  app.display_hitboxes = 0;
+
   init_SDL(&app);
   init_scene(&app);
   init_textures(&app);
   init_font();
+
   SDL_Event event;
   Vector player_init_pos = vector_create(100, 300, 200);
   Player player = player_create(&player_init_pos);
   int running = 1;
 
   while (running) {
-    running = handle_input(&event, &player, player_projectiles, &player_projectile_count);
+    running = handle_input(&app, &event, &player, player_projectiles, &player_projectile_count);
 
     generate_plane_shots(planes, &plane_count, plane_projectiles, &plane_projectile_count);
     generate_plane(&app, planes, &plane_count);

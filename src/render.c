@@ -146,7 +146,7 @@ void render_all(const App* app, const Player* player,
   SDL_RenderClear(app->renderer);
   render_textures(app, &app->center, player, buildings, building_count, planes, plane_count, player_projectiles,
                   player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
-  if (DEBUG_MODE == 1) {
+  if (app->display_hitboxes == 1) {
     render_hitboxes(app, &app->center, player, buildings, building_count, planes, plane_count, player_projectiles,
                     player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   }
