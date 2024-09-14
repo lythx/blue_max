@@ -66,3 +66,8 @@ Box tree_hitbox(const Tree* tree) {
   Vector center = vector_create(tree->x, tree->y, (double) TREE_HEIGHT / 2);
   return box_create_around_center(&center, TREE_WIDTH, TREE_WIDTH, TREE_HEIGHT);
 }
+
+Box tree_spawn_area(const Tree* tree) {
+  Vector center = vector_create(tree->x, tree->y, (double) TREE_HEIGHT / 2);
+  return box_create_around_center(&center, TREE_SPAWN_AREA_WIDTH, TREE_SPAWN_AREA_WIDTH, TREE_HEIGHT);
+}
