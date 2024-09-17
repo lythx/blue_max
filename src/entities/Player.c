@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../textures.h"
+#include "../utils.h"
 
 Player player_create(Vector* pos) {
   Box body_hb = box_create_around_center(pos, PLANE_BODY_LENGTH,
@@ -103,8 +104,13 @@ SDL_Texture* player_get_texture(const Player* player, int* width, int* height) {
   }
 }
 
-Projectile player_shoot(const Player* player) {
+Projectile player_shoot(Player* player) {
+  player->last_shot_timestamp = time_ms();
   Vector pos = vector_copy(&player->pos);
   return projectile_create(&pos, PROJECTILE_PLAYER);
 }
 
+int player_can_shoot(const Player* player)
+{
+  return time_ms() - player->last_shot_timestamp >= PLAYER_RELOAD_TIME_MS;
+}

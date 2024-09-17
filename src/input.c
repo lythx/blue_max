@@ -9,8 +9,11 @@ int handle_input(App* app, SDL_Event* event, Player* player,
         return 0;
       case SDL_KEYDOWN:
         if (event->key.keysym.scancode == SDL_SCANCODE_SPACE) {
-          player_projectiles[*player_projectile_count] = player_shoot(player);
-          (*player_projectile_count)++;
+          if (player_can_shoot(player))
+          {
+            player_projectiles[*player_projectile_count] = player_shoot(player);
+            (*player_projectile_count)++;
+          }
           break;
         } else if (event->key.keysym.scancode == SDL_SCANCODE_B) {
           app->display_hitboxes = app->display_hitboxes == 0 ? 1 : 0;

@@ -14,6 +14,7 @@ typedef struct {
   uint8_t right;
   uint8_t texture_type;
   long long last_texture_change;
+  long long last_shot_timestamp;
 } Player;
 
 Player player_create(Vector* pos);
@@ -26,6 +27,8 @@ void player_move(Player* player, Vector* center);
 
 SDL_Texture* player_get_texture(const Player* player, int* width, int* height);
 
-Projectile player_shoot(const Player* player);
+Projectile player_shoot(Player* player);
+
+int player_can_shoot(const Player* player);
 
 #endif //BLUE_MAX_PLAYER_H
