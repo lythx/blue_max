@@ -46,6 +46,8 @@ add_executable(${PROJECT_NAME} src/main.c
         src/ui.h
         src/font.c
         src/font.h
+        src/river.c
+        src/river.h
 )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 

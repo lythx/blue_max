@@ -125,4 +125,6 @@ typedef struct {
 #define UI_COLOR_2_G 255
 #define UI_COLOR_2_B 255
 
+#define RIVER_SEGMENT_COUNT 30
+
 #endif //BLUE_MAX_DEFS_H
