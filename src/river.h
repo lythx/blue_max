@@ -7,7 +7,7 @@ void river_initialize(const Vector* center);
 
 void river_generate_next(const Vector* center);
 
-void river_point_intersection(const Vector* p);
+int river_point_intersection(const Vector* p);
 
 Vector* river_get();
 
