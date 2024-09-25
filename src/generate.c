@@ -93,7 +93,7 @@ void generate_trees(const App* app, Tree* trees, uint8_t* tree_count,
     double x_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     double y_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     Tree tree = tree_create(mid.x + x_offset, y + y_offset);
-    Box tree_hb = tree_hitbox(&tree);
+    Box tree_hb = tree_spawn_area(&tree);
     int is_colliding = 0;
     for (uint8_t i = 0; i < building_count; i++) {
       Box building_hb = building_hitbox(&buildings[i]);

@@ -20,4 +20,6 @@ Tree tree_create(double x, double y);
 
 Box tree_hitbox(const Tree* tree);
 
+Box tree_spawn_area(const Tree* tree);
+
 #endif //BLUE_MAX_TREE_H
