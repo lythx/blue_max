@@ -1,5 +1,6 @@
 #include "update.h"
 #include "utils.h"
+#include "river.h"
 
 void move_center_and_entities(Vector* center, Player* player,
                               Plane* planes, uint8_t plane_count,
@@ -145,6 +146,7 @@ int update_all(App* app, Player* player,
 
   move_center_and_entities(&app->center, player, planes, *plane_count, player_projectiles, *player_projectile_count,
                            plane_projectiles, *plane_projectile_count);
+  river_update(app);
   if (handle_collisions(player, buildings, building_count, planes, plane_count,
                            player_projectiles, player_projectile_count, plane_projectiles, plane_projectile_count,
                            trees, tree_count)) {

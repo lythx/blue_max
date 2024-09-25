@@ -2,10 +2,11 @@
 #define RIVER_H
 
 #include "geometry.h"
+#include "defs.h"
 
 void river_initialize(const Vector* center);
 
-void river_generate_next(const Vector* center);
+void river_update(const App* app);
 
 int river_point_intersection(const Vector* p);
 

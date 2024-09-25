@@ -2,7 +2,6 @@
 #include "defs.h"
 
 Vector river[RIVER_SEGMENT_COUNT];
-int start_index = 0;
 
 void river_initialize(const Vector* center) {
   Vector v = vector_create(-SPAWN_DISTANCE_TO_CENTER, 0, 0);
@@ -17,7 +16,23 @@ void river_initialize(const Vector* center) {
   }
 }
 
-void river_generate_next(const Vector* center);
+void river_generate_next(const Vector* center) {
+  Vector last = river[RIVER_SEGMENT_COUNT - 1];
+  for (size_t i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
+    river[i] = river[i + 1];
+  }
+  Vector diff = vector_create(SPAWN_DISTANCE_TO_CENTER * 2.0 / RIVER_SEGMENT_COUNT, 0, 0);
+  vector_rotate(&diff);
+  river[RIVER_SEGMENT_COUNT - 1] = vector_create(last.x + diff.x, last.y + diff.y, 0);
+}
+
+void river_update(const App* app) {
+  Vector v = vector_create(SPAWN_DISTANCE_TO_CENTER, 0, 0);
+  vector_rotate(&v);
+  if (river[RIVER_SEGMENT_COUNT - 1].y < app->center.y + v.x) {
+    river_generate_next(&app->center);
+  }
+}
 
 int search_compare(const void* a, const void* b) {
   return ((Vector*) a)->x <= ((Vector*) b)->x ? 1 : -1;
