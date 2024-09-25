@@ -21,4 +21,6 @@ SDL_Rect draw_text(const App* app, int x, int y, const char* text, const Color* 
 
 void draw_text_line(const App* app, int x, int y, int count, char** texts, Color** colors);
 
+void draw_river(const App* app, const Vector* river);
+
 #endif //BLUE_MAX_DRAW_H

@@ -1,6 +1,7 @@
 #include "draw.h"
 #include "SDL_ttf.h"
 #include "font.h"
+#include "math.h"
 
 void translate_vector(Vector* v, const App* app, const Vector* center) {
   double vx = v->x;
@@ -115,3 +116,29 @@ void draw_text_line(const App* app, int x, int y, int count, char** texts, Color
     x += rect.w;
   }
 }
+
+void draw_river(const App* app, const Vector* river) {
+  SDL_SetRenderDrawColor(app->renderer, RIVER_COLOR_R, RIVER_COLOR_G, RIVER_COLOR_B, 255);
+  SDL_Rect rect;
+  rect.w = RIVER_WIDTH;
+  Vector diff, v;
+  int square_count;
+  for (int i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
+    diff = vector_copy(&river[i + 1]);
+    vector_subtract(&diff, &river[i]);
+    square_count = ceil(diff.y / RIVER_BORDER_SQUARE_WIDTH);
+    diff.x /= square_count;
+    diff.y /= square_count;
+    rect.h = 10;
+    v = vector_copy(&river[i]);
+    diff.y = -diff.y;
+    translate_vector(&v, app, &app->center);
+    for (int j = 0; j < square_count; j++) {
+      rect.x = (int) v.x;
+      rect.y = (int) v.y;
+      SDL_RenderFillRect(app->renderer, &rect);
+      vector_sum(&v, &diff);
+    }
+  }
+}
+

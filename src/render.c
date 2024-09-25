@@ -1,6 +1,6 @@
 #include "render.h"
-#include "config.h"
 #include "ui.h"
+#include "river.h"
 
 typedef enum {
     TEXTURE = 1,
@@ -144,6 +144,7 @@ void render_all(const App* app, const Player* player,
                 const Tree* trees, uint8_t tree_count) {
   SDL_SetRenderDrawColor(app->renderer, COLOR_GRASS_R, COLOR_GRASS_G, COLOR_GRASS_B, 255);
   SDL_RenderClear(app->renderer);
+  draw_river(app, river_get());
   render_textures(app, &app->center, player, buildings, building_count, planes, plane_count, player_projectiles,
                   player_projectile_count, plane_projectiles, plane_projectile_count, trees, tree_count);
   if (app->display_hitboxes == 1) {

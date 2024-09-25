@@ -1,7 +1,6 @@
 #include "SDL.h"
 #include "config.h"
 #include "init_SDL.h"
-#include "geometry.h"
 #include "entities.h"
 #include "stdlib.h"
 #include "time.h"
@@ -12,6 +11,7 @@
 #include "textures.h"
 #include "scene.h"
 #include "font.h"
+#include "river.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
   SDL_Event event;
   Vector player_init_pos = vector_create(100, 300, 200);
   Player player = player_create(&player_init_pos);
+  river_initialize(&app.center);
   int running = 1;
 
   while (running) {

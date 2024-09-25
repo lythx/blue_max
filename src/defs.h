@@ -128,5 +128,9 @@ typedef struct {
 
 #define RIVER_SEGMENT_COUNT 30
 #define RIVER_WIDTH 300.0
+#define RIVER_BORDER_SQUARE_WIDTH 5
+#define RIVER_COLOR_R 0
+#define RIVER_COLOR_G 101
+#define RIVER_COLOR_B 120
 
 #endif //BLUE_MAX_DEFS_H
