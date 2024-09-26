@@ -118,24 +118,31 @@ void draw_text_line(const App* app, int x, int y, int count, char** texts, Color
 }
 
 void draw_river(const App* app, const Vector* river) {
-  SDL_SetRenderDrawColor(app->renderer, RIVER_COLOR_R, RIVER_COLOR_G, RIVER_COLOR_B, 255);
   SDL_Rect rect;
-  rect.w = RIVER_WIDTH;
+  rect.w = RIVER_WIDTH - RIVER_LEFT_BORDER_WIDTH;
+  SDL_Rect border_rect;
+  border_rect.w = RIVER_LEFT_BORDER_WIDTH;
   Vector diff, v;
   int square_count;
   for (int i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
     diff = vector_copy(&river[i + 1]);
     vector_subtract(&diff, &river[i]);
     square_count = ceil(diff.y / RIVER_BORDER_SQUARE_WIDTH);
-    diff.x /= square_count;
-    diff.y /= square_count;
-    rect.h = 10;
+    diff.x = diff.x / square_count + 1;
+    diff.y = diff.y / square_count + 1;
+    rect.h = (int) diff.y + 1;
+    border_rect.h = rect.h;
     v = vector_copy(&river[i]);
     diff.y = -diff.y;
     translate_vector(&v, app, &app->center);
     for (int j = 0; j < square_count; j++) {
-      rect.x = (int) v.x;
-      rect.y = (int) v.y;
+      border_rect.x = (int) v.x;
+      border_rect.y = (int) v.y;
+      rect.x = border_rect.x + border_rect.w;
+      rect.y = border_rect.y;
+      SDL_SetRenderDrawColor(app->renderer, RIVER_BORDER_COLOR_R, RIVER_BORDER_COLOR_G, RIVER_BORDER_COLOR_B, 255);
+      SDL_RenderFillRect(app->renderer, &border_rect);
+      SDL_SetRenderDrawColor(app->renderer, RIVER_COLOR_R, RIVER_COLOR_G, RIVER_COLOR_B, 255);
       SDL_RenderFillRect(app->renderer, &rect);
       vector_sum(&v, &diff);
     }
