@@ -122,29 +122,28 @@ void draw_river(const App* app, const Vector* river) {
   rect.w = RIVER_WIDTH - RIVER_LEFT_BORDER_WIDTH;
   SDL_Rect border_rect;
   border_rect.w = RIVER_LEFT_BORDER_WIDTH;
-  Vector diff, v;
+  Vector low, high;
   int square_count;
+  double dx, dy;
   for (int i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
-    diff = vector_copy(&river[i + 1]);
-    vector_subtract(&diff, &river[i]);
-    square_count = ceil(diff.y / RIVER_BORDER_SQUARE_WIDTH);
-    diff.x = diff.x / square_count + 1;
-    diff.y = diff.y / square_count + 1;
-    rect.h = (int) diff.y + 1;
+    high = vector_copy(&river[i]);
+    low = vector_copy(&river[i + 1]);
+    translate_vector(&low, app, &app->center);
+    translate_vector(&high, app, &app->center);
+    square_count = ceil((high.y - low.y) / RIVER_BORDER_RECT_WIDTH);
+    dx = (high.x - low.x) / square_count;
+    dy = (high.y - low.y) / square_count;
+    rect.h = (int) dy + 1;
     border_rect.h = rect.h;
-    v = vector_copy(&river[i]);
-    diff.y = -diff.y;
-    translate_vector(&v, app, &app->center);
     for (int j = 0; j < square_count; j++) {
-      border_rect.x = (int) v.x;
-      border_rect.y = (int) v.y;
-      rect.x = border_rect.x + border_rect.w;
+      border_rect.x = (int) (low.x + dx * j);
+      border_rect.y = (int) (low.y + dy * j);
+      rect.x = border_rect.x + RIVER_LEFT_BORDER_WIDTH;
       rect.y = border_rect.y;
       SDL_SetRenderDrawColor(app->renderer, RIVER_BORDER_COLOR_R, RIVER_BORDER_COLOR_G, RIVER_BORDER_COLOR_B, 255);
       SDL_RenderFillRect(app->renderer, &border_rect);
       SDL_SetRenderDrawColor(app->renderer, RIVER_COLOR_R, RIVER_COLOR_G, RIVER_COLOR_B, 255);
       SDL_RenderFillRect(app->renderer, &rect);
-      vector_sum(&v, &diff);
     }
   }
 }

@@ -1,29 +1,43 @@
 #include "river.h"
 #include "defs.h"
+#include "utils.h"
 
 Vector river[RIVER_SEGMENT_COUNT];
 
-void river_initialize(const Vector* center) {
-  Vector v = vector_create(-SPAWN_DISTANCE_TO_CENTER, 0, 0);
-  vector_rotate(&v);
-  vector_sum(&v, center);
-  Vector diff = vector_create(SPAWN_DISTANCE_TO_CENTER * 2.0 / RIVER_SEGMENT_COUNT, 0, 0);
+Vector next_point(const Vector* center, Vector* v) {
+  double x = rand_min_max((double) RIVER_MIN_SEGMENT_LENGTH, (double) RIVER_MAX_SEGMENT_LENGTH);
+  double y = rand_min_max(-RIVER_MAX_SEGMENT_WIDTH, RIVER_MAX_SEGMENT_WIDTH);
+  Vector diff = vector_create(x, y, 0);
   vector_rotate(&diff);
-  double y_offset = -100;
-  for (size_t i = 0; i < RIVER_SEGMENT_COUNT; i++) {
-      river[i] = vector_create(v.x - y_offset, v.y, 0);
-      vector_sum(&v, &diff);
+  vector_sum(v, &diff);
+  double tan = ROTATION_SIN / ROTATION_COS;
+  double spawn_center_y = center->y + x * tan;
+//  if (v->y < spawn_center_y - RIVER_MAX_OFFSET) {
+//    v->y = spawn_center_y - RIVER_MAX_OFFSET;
+//  } else if (v->y > spawn_center_y + RIVER_MAX_OFFSET) {
+//    v->y = spawn_center_y + RIVER_MAX_OFFSET;
+//  }
+}
+
+void river_initialize(const Vector* center) {
+  Vector pos;
+  pos = vector_create(-SPAWN_DISTANCE_TO_CENTER, RIVER_START_Y_OFFSET, 0);
+  vector_rotate(&pos);
+  vector_sum(&pos, center);
+  river[0] = pos;
+  for (size_t i = 1; i < RIVER_SEGMENT_COUNT; i++) {
+    next_point(center, &pos);
+    river[i] = vector_copy(&pos);
   }
 }
 
 void river_generate_next(const Vector* center) {
-  Vector last = river[RIVER_SEGMENT_COUNT - 1];
+  Vector last = vector_copy(&river[RIVER_SEGMENT_COUNT - 1]);
   for (size_t i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
     river[i] = river[i + 1];
   }
-  Vector diff = vector_create(SPAWN_DISTANCE_TO_CENTER * 2.0 / RIVER_SEGMENT_COUNT, 0, 0);
-  vector_rotate(&diff);
-  river[RIVER_SEGMENT_COUNT - 1] = vector_create(last.x + diff.x, last.y + diff.y, 0);
+  next_point(center, &last);
+  river[RIVER_SEGMENT_COUNT - 1] = vector_create(last.x, last.y, 0);
 }
 
 void river_update(const App* app) {
