@@ -5,18 +5,18 @@
 Vector river[RIVER_SEGMENT_COUNT];
 
 Vector next_point(const Vector* center, Vector* v) {
-  double x = rand_min_max((double) RIVER_MIN_SEGMENT_LENGTH, (double) RIVER_MAX_SEGMENT_LENGTH);
+  double x = rand_min_max(RIVER_MIN_SEGMENT_LENGTH, RIVER_MAX_SEGMENT_LENGTH);
   double y = rand_min_max(-RIVER_MAX_SEGMENT_WIDTH, RIVER_MAX_SEGMENT_WIDTH);
   Vector diff = vector_create(x, y, 0);
   vector_rotate(&diff);
   vector_sum(v, &diff);
   double tan = ROTATION_SIN / ROTATION_COS;
-  double spawn_center_y = center->y + x * tan;
-//  if (v->y < spawn_center_y - RIVER_MAX_OFFSET) {
-//    v->y = spawn_center_y - RIVER_MAX_OFFSET;
-//  } else if (v->y > spawn_center_y + RIVER_MAX_OFFSET) {
-//    v->y = spawn_center_y + RIVER_MAX_OFFSET;
-//  }
+  double spawn_center_y = center->y + (v->x - center->x) * tan;
+  if (v->y < spawn_center_y - RIVER_LEFT_BOUND) {
+    v->y = spawn_center_y - RIVER_LEFT_BOUND;
+  } else if (v->y > spawn_center_y + RIVER_RIGHT_BOUND) {
+    v->y = spawn_center_y + RIVER_RIGHT_BOUND;
+  }
 }
 
 void river_initialize(const Vector* center) {
