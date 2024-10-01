@@ -49,29 +49,38 @@ void river_update(const App* app) {
 }
 
 int search_compare(const void* a, const void* b) {
-  return ((Box*) a)->y <= ((Vector*) b)->y ? 1 : -1;
+  return ((Vector*) a)->y <= ((Vector*) b)->y ? 1 : -1;
 }
 
 int sat_collision(const Vector* pos1, const Vector* slope1, const Vector* base1,
                   const Vector* pos2, const Vector* slope2, const Vector* base2)  {
-  // TODO
-  return 0;
+  double min1, min2, max1, max2;
+  // y-axis projection
+  min1 = min_d(pos1->y, pos1->y + slope1->y);
+  max1 = max_d(pos1->y + base1->y, pos1->y + base1->y + slope1->y);
+  min2 = min_d(pos2->y, pos2->y + slope2->y);
+  max2 = max_d(pos2->y + base2->y, pos2->y + base2->y + slope2->y);
+  if (max1 < min2 || max2 < min1) {
+    return 0;
+  }
+  return 1;
 }
 
 int river_box_intersection(const Box* b) {
-  Vector* v = bsearch(b, river, RIVER_SEGMENT_COUNT, sizeof(Vector), search_compare);
+  Vector key = vector_create(0, b->y, 0);
+  int i = binary_search(&key, river, RIVER_SEGMENT_COUNT, sizeof(Vector), search_compare);
   Vector box_pos = vector_create(b->x, b->y, 0);
   Vector box_slope = vector_create(b->length, 0, 0);
   vector_rotate(&box_slope);
   Vector box_base = vector_create(0, b->width, 0);
   Vector river_base = vector_create(0, RIVER_WIDTH, 0);
-  while (b->y + b->length < v->y && v + 1 < river + RIVER_SEGMENT_COUNT) {
-    Vector slope = vector_copy(v + 1);
-    vector_subtract(&slope, v);
-    if (sat_collision(&box_pos, &box_slope, &box_base, v, &slope, &river_base)) {
+  while (i + 1 < RIVER_SEGMENT_COUNT && river[i].y < box_pos.y + box_slope.y) {
+    Vector slope = vector_copy(&river[i + 1]);
+    vector_subtract(&slope, &river[i]);
+    if (sat_collision(&box_pos, &box_slope, &box_base, &river[i], &slope, &river_base)) {
       return 1;
     }
-    v++;
+    i++;
   }
   return 0;
 }

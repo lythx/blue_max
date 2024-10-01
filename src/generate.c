@@ -1,6 +1,7 @@
 #include "generate.h"
 #include "utils.h"
 #include "config.h"
+#include "river.h"
 
 typedef enum {
     UP = 1,
@@ -95,13 +96,19 @@ void generate_trees(const App* app, Tree* trees, uint8_t* tree_count,
     Tree tree = tree_create(mid.x + x_offset, y + y_offset);
     Box tree_hb = tree_spawn_area(&tree);
     int is_colliding = 0;
+    if (river_box_intersection(&tree_hb)) {
+      y += TREE_DEFAULT_DISTANCE;
+      continue;
+    }
     for (uint8_t i = 0; i < building_count; i++) {
       Box building_hb = building_hitbox(&buildings[i]);
       if (box_intersects(&tree_hb, &building_hb)) {
         is_colliding = 1;
+        break;
       }
     }
     if (is_colliding) {
+      y += TREE_DEFAULT_DISTANCE;
       continue;
     }
     trees[*tree_count] = tree;

@@ -8,7 +8,7 @@ void river_initialize(const Vector* center);
 
 void river_update(const App* app);
 
-int river_point_intersection(const Vector* p);
+int river_box_intersection(const Box* b);
 
 Vector* river_get();
 
