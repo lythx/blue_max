@@ -23,9 +23,9 @@ double vector_norm(const Vector* v);
 
 void vector_normalize(Vector* v);
 
-double vector_dot_product(const Vector* v1, const Vector* v2);
+double vector_dot(const Vector* v1, const Vector* v2);
 
-void vector_cross_product(Vector* v1, const Vector* v2);
+void vector_cross(Vector* v1, const Vector* v2);
 
 void vector_rotate(Vector* v);
 

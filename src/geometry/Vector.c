@@ -52,11 +52,11 @@ void vector_normalize(Vector* v) {
   vector_multiply(v, 1.0 / norm);
 }
 
-double vector_dot_product(const Vector* v1, const Vector* v2) {
+double vector_dot(const Vector* v1, const Vector* v2) {
   return v1->x * v2->x + v1->y * v2->y + v1->z * v2->z;
 }
 
-void vector_cross_product(Vector* v1, const Vector* v2) {
+void vector_cross(Vector* v1, const Vector* v2) {
   v1->x = v1->y * v2->z - v1->z * v2->y;
   v1->y = v1->z * v2->x - v1->x * v2->z;
   v1->z = v1->x * v2->y - v1->y * v2->x;

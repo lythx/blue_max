@@ -52,14 +52,62 @@ int search_compare(const void* a, const void* b) {
   return ((Vector*) a)->y <= ((Vector*) b)->y ? 1 : -1;
 }
 
+void get_points(Vector* points, const Vector* pos, const Vector* slope, const Vector* base) {
+  points[0] = vector_copy(pos);
+  points[1] = vector_copy(pos);
+  vector_sum(&points[1], base);
+  points[2] = vector_copy(&points[1]);
+  vector_sum(&points[2], slope);
+  points[3] = vector_copy(pos);
+  vector_sum(&points[3], slope);
+}
+
+void get_projection(double* min, double* max, const Vector* normal, const Vector* points) {
+  double dot;
+  for (uint8_t i = 0; i < 4; i++) {
+    dot = vector_dot(points, normal);
+    if (dot < *min) {
+      *min = dot;
+    } else if (dot > *max) {
+      *max = dot;
+    }
+  }
+}
+
 int sat_collision(const Vector* pos1, const Vector* slope1, const Vector* base1,
                   const Vector* pos2, const Vector* slope2, const Vector* base2)  {
   double min1, min2, max1, max2;
+  Vector normal, points1[4], points2[4];
   // y-axis projection
   min1 = min_d(pos1->y, pos1->y + slope1->y);
   max1 = max_d(pos1->y + base1->y, pos1->y + base1->y + slope1->y);
   min2 = min_d(pos2->y, pos2->y + slope2->y);
   max2 = max_d(pos2->y + base2->y, pos2->y + base2->y + slope2->y);
+  if (max1 < min2 || max2 < min1) {
+    return 0;
+  }
+
+  get_points(points1, pos1, slope1, base1);
+  get_points(points2, pos2, slope2, base2);
+
+  // slope1 projection
+  min1 = min2 = 1e10;
+  max1 = max2 = -1e10;
+  normal = vector_create(slope1->y, -slope1->x, 0);
+  vector_normalize(&normal);
+  get_projection(&min1, &max1, &normal, points1);
+  get_projection(&min2, &max2, &normal, points2);
+  if (max1 < min2 || max2 < min1) {
+    return 0;
+  }
+
+  // slope2 projection
+  min1 = min2 = 1e10;
+  max1 = max2 = -1e10;
+  normal = vector_create(slope2->y, -slope2->x, 0);
+  vector_normalize(&normal);
+  get_projection(&min1, &max1, &normal, points1);
+  get_projection(&min2, &max2, &normal, points2);
   if (max1 < min2 || max2 < min1) {
     return 0;
   }
