@@ -45,24 +45,34 @@ void generate_building(const App* app, Building* buildings, uint8_t* building_co
     return;
   }
   Vector pos;
-  int too_close;
+  int bad_spawn;
   int tries = 0;
+  Building building;
+  Box hitbox;
   do {
     tries++;
-    too_close = 0;
+    bad_spawn = 0;
     pos = get_random_position(&app->center, UP);
     pos.z = 0;
+    building = building_create(pos.x, pos.y, BUILDING_LENGTH, BUILDING_WIDTH, BUILDING_HEIGHT);
+    hitbox = building_hitbox(&building);
+    if (river_box_intersection(&hitbox)) {
+      bad_spawn = 1;
+      continue;
+    }
     for (uint8_t i = 0; i < *building_count; i++) {
       Vector diff = vector_create(buildings[i].x, buildings[i].y, 0);
       vector_subtract(&diff, &pos);
       if (vector_norm(&diff) < SPAWN_BUILDING_MIN_DISTANCE) {
-        too_close = 1;
+        bad_spawn = 1;
         break;
       }
     }
-  } while(too_close && tries < 3);
-  buildings[*building_count] = building_create(pos.x, pos.y, BUILDING_LENGTH, BUILDING_WIDTH, BUILDING_HEIGHT);
-  (*building_count)++;
+  } while(bad_spawn && tries < 10);
+  if (!bad_spawn) {
+    buildings[*building_count] = building;
+    (*building_count)++;
+  }
 }
 
 void generate_plane_shots(Plane* planes, const uint8_t* plane_count,
