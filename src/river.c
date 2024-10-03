@@ -65,7 +65,7 @@ void get_points(Vector* points, const Vector* pos, const Vector* slope, const Ve
 void get_projection(double* min, double* max, const Vector* normal, const Vector* points) {
   double dot;
   for (uint8_t i = 0; i < 4; i++) {
-    dot = vector_dot(points, normal);
+    dot = vector_dot(&points[i], normal);
     if (dot < *min) {
       *min = dot;
     } else if (dot > *max) {
@@ -115,8 +115,8 @@ int sat_collision(const Vector* pos1, const Vector* slope1, const Vector* base1,
 }
 
 int river_box_intersection(const Box* b) {
-  Vector key = vector_create(0, b->y, 0);
-  int i = binary_search(&key, river, RIVER_SEGMENT_COUNT, sizeof(Vector), search_compare);
+  // Vector key = vector_create(0, b->y, 0);
+  size_t i = 0; // binary_search(&key, river, RIVER_SEGMENT_COUNT, sizeof(Vector), search_compare);
   Vector box_pos = vector_create(b->x, b->y, 0);
   Vector box_slope = vector_create(b->length, 0, 0);
   vector_rotate(&box_slope);

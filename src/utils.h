@@ -17,7 +17,7 @@ double min_i(int a, int b);
 
 double max_i(int a, int b);
 
-int binary_search(const void* val, const void* array, size_t count, size_t size,
+size_t binary_search(const void* val, const void* array, size_t count, size_t size,
                   int (*comparator)(const void*, const void*));
 
 #endif //BLUE_MAX_UTILS_H

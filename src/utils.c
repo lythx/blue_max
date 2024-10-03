@@ -31,7 +31,7 @@ double max_i(int a, int b) {
   return a > b ? a : b;
 }
 
-int binary_search(const void* val, const void* array, size_t count, size_t size,
+size_t binary_search(const void* val, const void* array, size_t count, size_t size,
                   int (*comparator)(const void*, const void*)) {
   const char* arr = (const char*) array;
   size_t left = 0, mid, right = count;
