@@ -35,6 +35,7 @@ void render_hitboxes(const App* app, const Vector* center, const Player* player,
                      const Projectile* plane_projectiles, uint8_t plane_projectile_count,
                      const Tree* trees, uint8_t tree_count) {
   SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 255);
+  draw_river_hitbox(app, river_get());
   draw_hitboxes(app, center, player->hitboxes, 2);
   for (uint8_t i = 0; i < plane_count; i++) {
     draw_hitboxes(app, center, planes[i].hitboxes, 2);

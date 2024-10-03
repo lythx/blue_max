@@ -23,4 +23,6 @@ void draw_text_line(const App* app, int x, int y, int count, char** texts, Color
 
 void draw_river(const App* app, const Vector* river);
 
+void draw_river_hitbox(const App* app, const Vector* river);
+
 #endif //BLUE_MAX_DRAW_H

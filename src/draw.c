@@ -117,6 +117,23 @@ void draw_text_line(const App* app, int x, int y, int count, char** texts, Color
   }
 }
 
+void draw_river_hitbox(const App* app, const Vector* river) {
+  Vector a, b, c, d;
+  Vector base = vector_create(0, RIVER_WIDTH, 0);
+  for (int i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
+    a = vector_copy(&river[i]);
+    b = vector_copy(&river[i + 1]);
+    c = vector_copy(&b);
+    vector_sum(&c, &base);
+    d = vector_copy(&a);
+    vector_sum(&d, &base);
+    draw_line(app, &app->center, &a, &b);
+    draw_line(app, &app->center, &b, &c);
+    draw_line(app, &app->center, &c, &d);
+    draw_line(app, &app->center, &d, &a);
+  }
+}
+
 void draw_river(const App* app, const Vector* river) {
   SDL_Rect rect;
   rect.w = RIVER_WIDTH - RIVER_LEFT_BORDER_WIDTH;
