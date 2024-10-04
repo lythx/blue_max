@@ -1,6 +1,5 @@
 #include "generate.h"
 #include "utils.h"
-#include "config.h"
 #include "river.h"
 
 typedef enum {
@@ -99,8 +98,8 @@ void generate_trees(const App* app, Tree* trees, uint8_t* tree_count,
   Vector mid = vector_create(SPAWN_DISTANCE_TO_CENTER, 0, 0);
   vector_rotate(&mid);
   vector_sum(&mid, &app->center);
-  double y = mid.y - WINDOW_WIDTH;
-  while (y < mid.y + WINDOW_WIDTH + TREE_DEFAULT_DISTANCE) {
+  double y = mid.y - app->window_width;
+  while (y < mid.y + app->window_width + TREE_DEFAULT_DISTANCE) {
     double x_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     double y_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     Tree tree = tree_create(mid.x + x_offset, y + y_offset);

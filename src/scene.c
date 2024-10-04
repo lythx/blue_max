@@ -21,4 +21,5 @@ void init_scene(App* app) {
   app->bottom_padding = (int) (display_h * FLEX_BOTTOM_UI) + vertical_margin;
   app->center = vector_create(app->right_padding + (double) app->scene_width / 2,
                               app->top_padding + (double) app->scene_height / 2, 0);
+  app->display_scale = (double) app->window_width / DEFAULT_WINDOW_WIDTH;
 }

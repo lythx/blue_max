@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 23)
 add_executable(${PROJECT_NAME} src/main.c
         src/geometry/Vector.c
         src/geometry/Vector.h
-        src/config.h
         src/geometry/Sphere.c
         src/geometry/Sphere.h
         src/geometry/Box.c

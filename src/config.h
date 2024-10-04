@@ -1,8 +1,0 @@
-#ifndef BLUE_MAX_CONFIG_H
-#define BLUE_MAX_CONFIG_H
-
-#define DEBUG_LOG 1
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-
-#endif //BLUE_MAX_CONFIG_H

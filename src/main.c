@@ -1,5 +1,4 @@
 #include "SDL.h"
-#include "config.h"
 #include "init_SDL.h"
 #include "entities.h"
 #include "stdlib.h"

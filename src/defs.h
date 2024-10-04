@@ -17,6 +17,7 @@ typedef struct {
     int bottom_padding;
     Vector center;
     int display_hitboxes;
+    double display_scale;
 } App;
 
 typedef struct {
@@ -24,6 +25,8 @@ typedef struct {
     uint8_t g;
     uint8_t b;
 } Color;
+
+#define DEBUG_LOG 1
 
 #define ROTATION_SIN 0.68199836
 #define ROTATION_COS 0.7313537
@@ -109,6 +112,7 @@ typedef struct {
 #define CAMERA_CENTER_OFFSET_Y 0
 #define CAMERA_CENTER_OFFSET_Z 800
 
+#define DEFAULT_WINDOW_WIDTH 800
 #define DISPLAY_WIDTH_TO_HEIGHT_RATIO 1.5
 
 #define FLEX_TOP_PADDING 0.05
