@@ -1,4 +1,5 @@
 #include "input.h"
+#include "scene.h"
 
 int handle_input(App* app, SDL_Event* event, Player* player,
                  Projectile* player_projectiles, uint8_t* player_projectile_count) {
@@ -27,6 +28,13 @@ int handle_input(App* app, SDL_Event* event, Player* player,
           player_handle_keyup(player, event->key.keysym.scancode);
         }
         break;
+      case SDL_WINDOWEVENT:
+        switch (event->window.event)
+        {
+          case SDL_WINDOWEVENT_RESIZED:
+            SDL_Log("resize");
+            init_scene(app);
+        }
     }
   }
   return 1;
