@@ -5,8 +5,8 @@
 
 void translate_vector(Vector* v, const App* app, const Vector* center) {
   double vx = v->x;
-  v->x = app->left_padding + v->y - center->y + (double) app->scene_width / 2;
-  v->y = app->top_padding + app->scene_height * 0.5 - vx + v->z * HEIGHT_Y_OFFSET + center->x;
+  v->x = app->left_padding + app->scene_width * 0.5 + (v->y - center->y) * app->scene_scale;
+  v->y = app->top_padding + app->scene_height * 0.5 + (center->x - vx + v->z * HEIGHT_Y_OFFSET) * app->scene_scale;
 }
 
 void draw_point(const App* app, const Vector* center, const Vector* p) {
@@ -64,22 +64,22 @@ void draw_texture(const App* app, const Vector* center, SDL_Texture *texture, co
   Vector pos_copy = vector_copy(pos);
   translate_vector(&pos_copy, app, center);
   SDL_Rect dest;
-  dest.x = (int) pos_copy.x - width / 2;
-  dest.y = (int) pos_copy.y - height / 2;
-  dest.w = width;
-  dest.h = height;
+  dest.x = (int) (pos_copy.x - width * app->scene_scale / 2);
+  dest.y = (int) (pos_copy.y - height * app->scene_scale / 2);
+  dest.w = (int) (width * app->scene_scale);
+  dest.h = (int) (height * app->scene_scale);
   SDL_RenderCopy(app->renderer, texture, NULL, &dest);
 }
 
 void draw_tree(const App* app, const Vector* center, const Tree* tree) {
   Vector pos = vector_create(tree->x, tree->y, 0);
   translate_vector(&pos, app, center);
-  pos.x -= (double) TREE_TEXTURE_WIDTH / 3;
-  pos.y -= (double) TREE_TEXTURE_HEIGHT * (3.0 / 2);
+  pos.x -= TREE_TEXTURE_WIDTH * app->scene_scale / 3;
+  pos.y -= TREE_TEXTURE_HEIGHT * app->scene_scale * 3.0 / 2;
   int rows = TREE_GRID_ROWS;
   int cols = TREE_GRID_COLUMNS;
-  double dx = (double) TREE_TEXTURE_WIDTH / rows;
-  double dy = (double) TREE_TEXTURE_HEIGHT / cols;
+  double dx = TREE_TEXTURE_WIDTH * app->scene_scale / rows;
+  double dy = TREE_TEXTURE_HEIGHT * app->scene_scale / cols;
   SDL_Rect rect;
   rect.w = (int) dx + 1;
   rect.h = (int) dy + 1;
@@ -136,9 +136,9 @@ void draw_river_hitbox(const App* app, const Vector* river) {
 
 void draw_river(const App* app, const Vector* river) {
   SDL_Rect rect;
-  rect.w = RIVER_WIDTH - RIVER_LEFT_BORDER_WIDTH;
+  rect.w = (int) ((RIVER_WIDTH - RIVER_LEFT_BORDER_WIDTH) * app->scene_scale);
   SDL_Rect border_rect;
-  border_rect.w = RIVER_LEFT_BORDER_WIDTH;
+  border_rect.w = (int) (RIVER_LEFT_BORDER_WIDTH * app->scene_scale);
   Vector low, high;
   int square_count;
   double dx, dy;
@@ -155,7 +155,7 @@ void draw_river(const App* app, const Vector* river) {
     for (int j = 0; j < square_count; j++) {
       border_rect.x = (int) (low.x + dx * j);
       border_rect.y = (int) (low.y + dy * j);
-      rect.x = border_rect.x + RIVER_LEFT_BORDER_WIDTH;
+      rect.x = (int) (border_rect.x + (RIVER_LEFT_BORDER_WIDTH) * app->scene_scale);
       rect.y = border_rect.y;
       SDL_SetRenderDrawColor(app->renderer, RIVER_BORDER_COLOR_R, RIVER_BORDER_COLOR_G, RIVER_BORDER_COLOR_B, 255);
       SDL_RenderFillRect(app->renderer, &border_rect);

@@ -37,6 +37,8 @@ int main(int argc, char* argv[]) {
   init_scene(&app);
   init_textures(&app);
   init_font();
+  app.center = vector_create(app.right_padding + (double) app.scene_width / 2,
+                              app.top_padding + (double) app.scene_height / 2, 0);
 
   SDL_Event event;
   Vector player_init_pos = vector_create(100, 300, 200);
