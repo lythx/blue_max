@@ -1,6 +1,7 @@
 #include "generate.h"
 #include "utils.h"
 #include "river.h"
+#include "airport.h"
 
 typedef enum {
     UP = 1,
@@ -48,6 +49,7 @@ void generate_building(const App* app, Building* buildings, uint8_t* building_co
   int tries = 0;
   Building building;
   Box hitbox;
+  Box airport_hb = airport_get_hitbox(app);
   do {
     tries++;
     bad_spawn = 0;
@@ -55,7 +57,7 @@ void generate_building(const App* app, Building* buildings, uint8_t* building_co
     pos.z = 0;
     building = building_create(pos.x, pos.y, BUILDING_LENGTH, BUILDING_WIDTH, BUILDING_HEIGHT);
     hitbox = building_hitbox(&building);
-    if (river_box_intersection(&hitbox)) {
+    if (river_box_intersection(&hitbox) || box_intersects(&airport_hb, &hitbox)) {
       bad_spawn = 1;
       continue;
     }
@@ -99,13 +101,14 @@ void generate_trees(const App* app, Tree* trees, uint8_t* tree_count,
   vector_rotate(&mid);
   vector_sum(&mid, &app->center);
   double y = mid.y - app->window_width;
+  Box airport_hb = airport_get_hitbox(app);
   while (y < mid.y + app->window_width + TREE_DEFAULT_DISTANCE) {
     double x_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     double y_offset = rand_min_max(-TREE_MAX_OFFSET, TREE_MAX_OFFSET);
     Tree tree = tree_create(mid.x + x_offset, y + y_offset);
     Box tree_hb = tree_spawn_area(&tree);
     int is_colliding = 0;
-    if (river_box_intersection(&tree_hb)) {
+    if (river_box_intersection(&tree_hb) || box_intersects(&airport_hb, &tree_hb)) {
       y += TREE_DEFAULT_DISTANCE;
       continue;
     }

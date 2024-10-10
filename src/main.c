@@ -11,6 +11,7 @@
 #include "scene.h"
 #include "font.h"
 #include "river.h"
+#include "airport.h"
 
 Plane planes[MAX_PLANES];
 uint8_t plane_count = 0;
@@ -44,6 +45,7 @@ int main(int argc, char* argv[]) {
   Vector player_init_pos = vector_create(100, 300, 200);
   Player player = player_create(&player_init_pos);
   river_initialize(&app.center);
+  airport_initialize();
   int running = 1;
 
   while (running) {

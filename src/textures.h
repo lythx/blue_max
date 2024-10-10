@@ -17,7 +17,8 @@ typedef enum {
     TEXTURE_PLANE_RIGHT = 15,
     TEXTURE_TREE = 6,
     TEXTURE_PROJECTILE = 7,
-    TEXTURE_BUILDING = 8
+    TEXTURE_BUILDING = 8,
+    TEXTURE_AIRPORT = 14
 } TEXTURE;
 
 void init_textures(const App* app);

@@ -1,6 +1,7 @@
 #include "render.h"
 #include "ui.h"
 #include "river.h"
+#include "airport.h"
 
 typedef enum {
     TEXTURE = 1,
@@ -36,6 +37,8 @@ void render_hitboxes(const App* app, const Vector* center, const Player* player,
                      const Tree* trees, uint8_t tree_count) {
   SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 255);
   draw_river_hitbox(app, river_get());
+  Box airport_hb = airport_get_hitbox(app);
+  draw_box(app, center, &airport_hb);
   draw_hitboxes(app, center, player->hitboxes, 2);
   for (uint8_t i = 0; i < plane_count; i++) {
     draw_hitboxes(app, center, planes[i].hitboxes, 2);
@@ -89,9 +92,11 @@ void render_textures(const App* app, const Vector* center, const Player* player,
                      const Tree* trees, uint8_t tree_count) {
   Vector camera_pos = get_camera_pos(center);
   int w, h;
-  SDL_Texture* texture = player_get_texture(player, &w, &h);
+  SDL_Texture* texture = airport_get_texture(&w, &h);
+  Vector entity_pos = airport_get_pos(app);
+  draw_texture(app, &app->center, texture, &entity_pos, w, h);
+  texture = player_get_texture(player, &w, &h);
   double dist = vector_point_distance(&camera_pos, &player->pos);
-  Vector entity_pos;
   entity_count = 0;
   all_entities[entity_count++] = (Entity) {TEXTURE, dist, texture, player->pos,
                                     PLANE_TEXTURE_WIDTH, PLANE_TEXTURE_HEIGHT};
