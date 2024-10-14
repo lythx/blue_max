@@ -93,7 +93,7 @@ void render_textures(const App* app, const Vector* center, const Player* player,
   Vector camera_pos = get_camera_pos(center);
   int w, h;
   SDL_Texture* texture = airport_get_texture(&w, &h);
-  Vector entity_pos = airport_get_pos(app);
+  Vector entity_pos = airport_get_pos(app, NULL);
   draw_texture(app, &app->center, texture, &entity_pos, w, h);
   texture = player_get_texture(player, &w, &h);
   double dist = vector_point_distance(&camera_pos, &player->pos);

@@ -1,25 +1,67 @@
 #include "river.h"
 #include "defs.h"
 #include "utils.h"
+#include "airport.h"
 
 Vector river[RIVER_SEGMENT_COUNT];
 
-Vector next_point(const Vector* center, Vector* v) {
-  double x = rand_min_max(RIVER_MIN_SEGMENT_LENGTH, RIVER_MAX_SEGMENT_LENGTH);
-  double y = rand_min_max(-RIVER_MAX_SEGMENT_WIDTH, RIVER_MAX_SEGMENT_WIDTH);
-  Vector diff = vector_create(x, y, 0);
+void get_y_bounds(const App* app, double x, const Vector* prev_pos,
+                  double *min_dy, double *max_dy, double* left_bound, double *right_bound) {
+  *min_dy = -RIVER_MAX_SEGMENT_WIDTH;
+  *max_dy = RIVER_MAX_SEGMENT_WIDTH;
+  *left_bound = RIVER_LEFT_BOUND;
+  *right_bound = RIVER_RIGHT_BOUND;
+  AIRPORT_SIDE airport_side;
+  Vector airport_pos = airport_get_pos(app, &airport_side);
+  if (airport_pos.x < x && x < airport_pos.x + AIRPORT_LENGTH) {
+    if (airport_side == AIRPORT_LEFT) {
+      *left_bound = RIVER_MIN_Y_LEFT_AIRPORT;
+    } else {
+      *right_bound = RIVER_MAX_Y_RIGHT_AIRPORT;
+    }
+  }
+  else if (airport_pos.x - RIVER_AIRPORT_AVOID_DISTANCE < x && x < airport_pos.x) { // CHANGE MIDDLE TO START OF AIRPORT
+    double target_y = airport_side == AIRPORT_LEFT ? RIVER_MIN_Y_LEFT_AIRPORT : RIVER_MAX_Y_RIGHT_AIRPORT;
+    double tan = (airport_pos.x - prev_pos->x) / (target_y - prev_pos->y);
+    double dx = x - prev_pos->x;
+    double dy = dx / tan;
+    if (airport_side == AIRPORT_LEFT) { // doesn't work for left airport
+      *max_dy = dy;
+    } else {
+      *min_dy = dy;
+    }
+  }
+}
+
+Vector next_point(const App* app, Vector* v) {
+  double dx = rand_min_max(RIVER_MIN_SEGMENT_LENGTH, RIVER_MAX_SEGMENT_LENGTH);
+  double min_dy, max_dy, left_bound, right_bound;
+  Vector diff = vector_create(dx, 0, 0);
+  vector_rotate(&diff);
+  double approx_x = v->x + diff.x;
+  get_y_bounds(app, approx_x, v, &min_dy, &max_dy, &left_bound, &right_bound);
+  double dy = rand_min_max(min_dy, max_dy);
+  diff = vector_create(dx, dy, 0);
   vector_rotate(&diff);
   vector_sum(v, &diff);
   double tan = ROTATION_SIN / ROTATION_COS;
-  double spawn_center_y = center->y + (v->x - center->x) * tan;
-  if (v->y < spawn_center_y - RIVER_LEFT_BOUND) {
-    v->y = spawn_center_y - RIVER_LEFT_BOUND;
-  } else if (v->y > spawn_center_y + RIVER_RIGHT_BOUND) {
-    v->y = spawn_center_y + RIVER_RIGHT_BOUND;
+  double spawn_center_y = app->center.y + (v->x - app->center.x) * tan;
+  if (v->y < spawn_center_y + left_bound) {
+    v->y = spawn_center_y + left_bound;
+  } else if (v->y > spawn_center_y + right_bound) {
+    v->y = spawn_center_y + right_bound;
   }
 }
 
 void river_initialize(const Vector* center) {
+  if (RIVER_MIN_Y_LEFT_AIRPORT >= RIVER_RIGHT_BOUND) {
+    SDL_Log("RIVER_MIN_Y_LEFT_AIRPORT must be greater than RIVER_RIGHT_BOUND");
+    exit(1);
+  }
+  if (RIVER_MAX_Y_RIGHT_AIRPORT <= RIVER_LEFT_BOUND) {
+    SDL_Log("RIVER_MAX_Y_RIGHT_AIRPORT must be greater than RIVER_LEFT_BOUND");
+    exit(1);
+  }
   Vector pos;
   pos = vector_create(-SPAWN_DISTANCE_TO_CENTER, RIVER_START_Y_OFFSET, 0);
   vector_rotate(&pos);

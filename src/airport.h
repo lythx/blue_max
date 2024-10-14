@@ -5,8 +5,8 @@
 #include "entities.h"
 
 typedef enum {
-    AIRPORT_LEFT = 0,
-    AIRPORT_RIGHT = 1
+    AIRPORT_LEFT = 1,
+    AIRPORT_RIGHT = 2
 } AIRPORT_SIDE;
 
 typedef struct {
@@ -16,7 +16,7 @@ typedef struct {
 
 void airport_initialize();
 
-Vector airport_get_pos(const App* app);
+Vector airport_get_pos(const App* app, AIRPORT_SIDE *side);
 
 Box airport_get_hitbox(const App* app);
 

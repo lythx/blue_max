@@ -9,7 +9,10 @@ void airport_initialize() {
   airport = (Airport) {AIRPORT_START_X, AIRPORT_RIGHT};
 }
 
-Vector airport_get_pos(const App* app) {
+Vector airport_get_pos(const App* app, AIRPORT_SIDE* side) {
+  if (side != NULL) {
+    *side = airport.side;
+  }
   Vector v;
   Vector mid = vector_create(AIRPORT_LENGTH * 0.5, AIRPORT_WIDTH * 0.5, 0);
   vector_rotate(&mid);
@@ -27,7 +30,7 @@ Vector airport_get_pos(const App* app) {
 }
 
 Box airport_get_hitbox(const App* app) {
-  Vector pos = airport_get_pos(app);
+  Vector pos = airport_get_pos(app, NULL);
   return box_create_around_center(&pos, AIRPORT_LENGTH, AIRPORT_WIDTH, 1);
 }
 
@@ -35,7 +38,7 @@ void airport_update(const App* app) {
   if (app->center.x - airport.x - AIRPORT_LENGTH > UNLOAD_DISTANCE_TO_CENTER) {
     double dist = rand_min_max(AIRPORT_MIN_DISTANCE, AIRPORT_MAX_DISTANCE);
     double x = airport.x + dist;
-    AIRPORT_SIDE side = rand_0_1() > 0.5 ? AIRPORT_LEFT : AIRPORT_RIGHT;
+    AIRPORT_SIDE side = (rand_0_1() > 0.5) ? AIRPORT_LEFT : AIRPORT_RIGHT;
     airport = (Airport) {x, side};
   }
 }
