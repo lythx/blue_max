@@ -13,6 +13,7 @@ void get_y_bounds(const App* app, double x, const Vector* prev_pos,
   *right_bound = RIVER_RIGHT_BOUND;
   AIRPORT_SIDE airport_side;
   Vector airport_pos = airport_get_pos(app, &airport_side);
+  airport_pos.x -= AIRPORT_LENGTH * 0.5;
   if (airport_pos.x < x && x < airport_pos.x + AIRPORT_LENGTH) {
     if (airport_side == AIRPORT_LEFT) {
       *left_bound = RIVER_MIN_Y_LEFT_AIRPORT;
@@ -20,12 +21,14 @@ void get_y_bounds(const App* app, double x, const Vector* prev_pos,
       *right_bound = RIVER_MAX_Y_RIGHT_AIRPORT;
     }
   }
-  else if (airport_pos.x - RIVER_AIRPORT_AVOID_DISTANCE < x && x < airport_pos.x) { // CHANGE MIDDLE TO START OF AIRPORT
-    double target_y = airport_side == AIRPORT_LEFT ? RIVER_MIN_Y_LEFT_AIRPORT : RIVER_MAX_Y_RIGHT_AIRPORT;
-    double tan = (airport_pos.x - prev_pos->x) / (target_y - prev_pos->y);
-    double dx = x - prev_pos->x;
-    double dy = dx / tan;
-    if (airport_side == AIRPORT_LEFT) { // doesn't work for left airport
+  else if (airport_pos.x - RIVER_AIRPORT_AVOID_DISTANCE < x && x < airport_pos.x) {
+    double target_y_offset = airport_side == AIRPORT_LEFT ? RIVER_MIN_Y_LEFT_AIRPORT : RIVER_MAX_Y_RIGHT_AIRPORT;
+    double spawn_center_y = app->center.y + (prev_pos->x - app->center.x) * (ROTATION_SIN / ROTATION_COS);
+    double current_y_offset = prev_pos->y -  spawn_center_y;
+    double dy = target_y_offset - current_y_offset;
+    int min_step_count = (int) (ceil(airport_pos.x - prev_pos->x) / RIVER_MAX_SEGMENT_LENGTH) + 1;
+    dy /= min_step_count;
+    if (airport_side == AIRPORT_LEFT) {
       *max_dy = dy;
     } else {
       *min_dy = dy;
@@ -35,12 +38,12 @@ void get_y_bounds(const App* app, double x, const Vector* prev_pos,
 
 Vector next_point(const App* app, Vector* v) {
   double dx = rand_min_max(RIVER_MIN_SEGMENT_LENGTH, RIVER_MAX_SEGMENT_LENGTH);
-  double min_dy, max_dy, left_bound, right_bound;
+  double min_dy, max_dy, left_bound, right_bound, dy;
   Vector diff = vector_create(dx, 0, 0);
   vector_rotate(&diff);
   double approx_x = v->x + diff.x;
   get_y_bounds(app, approx_x, v, &min_dy, &max_dy, &left_bound, &right_bound);
-  double dy = rand_min_max(min_dy, max_dy);
+  dy = rand_min_max(min_dy, max_dy);
   diff = vector_create(dx, dy, 0);
   vector_rotate(&diff);
   vector_sum(v, &diff);

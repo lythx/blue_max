@@ -32,7 +32,6 @@ int handle_input(App* app, SDL_Event* event, Player* player,
         switch (event->window.event)
         {
           case SDL_WINDOWEVENT_RESIZED:
-            SDL_Log("resize");
             init_scene(app);
         }
     }
