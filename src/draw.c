@@ -106,6 +106,8 @@ SDL_Rect draw_text(const App* app, int x, int y, const char* text, const Color* 
   SDL_Texture* texture = SDL_CreateTextureFromSurface(app->renderer, surface);
   SDL_Rect dest = {x, y, surface->w, surface->h};
   SDL_RenderCopy(app->renderer, texture, NULL, &dest);
+  SDL_FreeSurface(surface);
+  SDL_DestroyTexture(texture);
   return dest;
 }
 
