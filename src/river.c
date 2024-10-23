@@ -29,9 +29,9 @@ void get_y_bounds(const App* app, double x, const Vector* prev_pos,
     int min_step_count = (int) (ceil(airport_pos.x - prev_pos->x) / RIVER_MAX_SEGMENT_LENGTH) + 1;
     dy /= min_step_count;
     if (airport_side == AIRPORT_LEFT) {
-      *max_dy = dy;
-    } else {
       *min_dy = dy;
+    } else {
+      *max_dy = dy;
     }
   }
 }
@@ -56,7 +56,7 @@ Vector next_point(const App* app, Vector* v) {
   }
 }
 
-void river_initialize(const Vector* center) {
+void river_initialize(const App* app) {
   if (RIVER_MIN_Y_LEFT_AIRPORT >= RIVER_RIGHT_BOUND) {
     SDL_Log("RIVER_MIN_Y_LEFT_AIRPORT must be greater than RIVER_RIGHT_BOUND");
     exit(1);
@@ -68,28 +68,28 @@ void river_initialize(const Vector* center) {
   Vector pos;
   pos = vector_create(-SPAWN_DISTANCE_TO_CENTER, RIVER_START_Y_OFFSET, 0);
   vector_rotate(&pos);
-  vector_sum(&pos, center);
+  vector_sum(&pos, &app->center);
   river[0] = pos;
   for (size_t i = 1; i < RIVER_SEGMENT_COUNT; i++) {
-    next_point(center, &pos);
+    next_point(app, &pos);
     river[i] = vector_copy(&pos);
   }
 }
 
-void river_generate_next(const Vector* center) {
+void river_generate_next(const App* app) {
   Vector last = vector_copy(&river[RIVER_SEGMENT_COUNT - 1]);
   for (size_t i = 0; i < RIVER_SEGMENT_COUNT - 1; i++) {
     river[i] = river[i + 1];
   }
-  next_point(center, &last);
+  next_point(app, &last);
   river[RIVER_SEGMENT_COUNT - 1] = vector_create(last.x, last.y, 0);
 }
 
 void river_update(const App* app) {
-  Vector v = vector_create(SPAWN_DISTANCE_TO_CENTER, 0, 0);
+  Vector v = vector_create(RIVER_SPAWN_DISTANCE_X, 0, 0);
   vector_rotate(&v);
   if (river[RIVER_SEGMENT_COUNT - 1].y < app->center.y + v.x) {
-    river_generate_next(&app->center);
+    river_generate_next(app);
   }
 }
 

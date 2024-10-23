@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
   SDL_Event event;
   Vector player_init_pos = vector_create(100, 300, 200);
   Player player = player_create(&player_init_pos);
-  river_initialize(&app.center);
+  river_initialize(&app);
   airport_initialize();
   int running = 1;
 

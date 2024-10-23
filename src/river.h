@@ -4,7 +4,7 @@
 #include "geometry.h"
 #include "defs.h"
 
-void river_initialize(const Vector* center);
+void river_initialize(const App* app);
 
 void river_update(const App* app);
 
